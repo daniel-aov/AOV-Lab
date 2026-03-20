@@ -39,16 +39,16 @@ interface HostPaths {
 
 const HOST_PATHS: Record<Host, HostPaths> = {
   claude: {
-    skillRoot: '~/.claude/skills/gstack',
-    localSkillRoot: '.claude/skills/gstack',
-    binDir: '~/.claude/skills/gstack/bin',
-    browseDir: '~/.claude/skills/gstack/browse/dist',
+    skillRoot: '~/.claude/skills/aov-lab',
+    localSkillRoot: '.claude/skills/aov-lab',
+    binDir: '~/.claude/skills/aov-lab/bin',
+    browseDir: '~/.claude/skills/aov-lab/browse/dist',
   },
   codex: {
-    skillRoot: '~/.codex/skills/gstack',
-    localSkillRoot: '.agents/skills/gstack',
-    binDir: '~/.codex/skills/gstack/bin',
-    browseDir: '~/.codex/skills/gstack/browse/dist',
+    skillRoot: '~/.codex/skills/aov-lab',
+    localSkillRoot: '.agents/skills/aov-lab',
+    binDir: '~/.codex/skills/aov-lab/bin',
+    browseDir: '~/.codex/skills/aov-lab/browse/dist',
   },
 };
 
@@ -140,47 +140,47 @@ function generatePreambleBash(ctx: TemplateContext): string {
   return `## Preamble (run first)
 
 \`\`\`bash
-_UPD=$(${ctx.paths.binDir}/gstack-update-check 2>/dev/null || ${ctx.paths.localSkillRoot}/bin/gstack-update-check 2>/dev/null || true)
+_UPD=$(${ctx.paths.binDir}/aov-lab-update-check 2>/dev/null || ${ctx.paths.localSkillRoot}/bin/aov-lab-update-check 2>/dev/null || true)
 [ -n "$_UPD" ] && echo "$_UPD" || true
-mkdir -p ~/.gstack/sessions
-touch ~/.gstack/sessions/"$PPID"
-_SESSIONS=$(find ~/.gstack/sessions -mmin -120 -type f 2>/dev/null | wc -l | tr -d ' ')
-find ~/.gstack/sessions -mmin +120 -type f -delete 2>/dev/null || true
-_CONTRIB=$(${ctx.paths.binDir}/gstack-config get gstack_contributor 2>/dev/null || true)
-_PROACTIVE=$(${ctx.paths.binDir}/gstack-config get proactive 2>/dev/null || echo "true")
+mkdir -p ~/.aov-lab/sessions
+touch ~/.aov-lab/sessions/"$PPID"
+_SESSIONS=$(find ~/.aov-lab/sessions -mmin -120 -type f 2>/dev/null | wc -l | tr -d ' ')
+find ~/.aov-lab/sessions -mmin +120 -type f -delete 2>/dev/null || true
+_CONTRIB=$(${ctx.paths.binDir}/aov-lab-config get aov_lab_contributor 2>/dev/null || true)
+_PROACTIVE=$(${ctx.paths.binDir}/aov-lab-config get proactive 2>/dev/null || echo "true")
 _BRANCH=$(git branch --show-current 2>/dev/null || echo "unknown")
 echo "BRANCH: $_BRANCH"
 echo "PROACTIVE: $_PROACTIVE"
-_LAKE_SEEN=$([ -f ~/.gstack/.completeness-intro-seen ] && echo "yes" || echo "no")
+_LAKE_SEEN=$([ -f ~/.aov-lab/.completeness-intro-seen ] && echo "yes" || echo "no")
 echo "LAKE_INTRO: $_LAKE_SEEN"
-_TEL=$(~/.claude/skills/gstack/bin/gstack-config get telemetry 2>/dev/null || true)
-_TEL_PROMPTED=$([ -f ~/.gstack/.telemetry-prompted ] && echo "yes" || echo "no")
+_TEL=$(~/.claude/skills/aov-lab/bin/aov-lab-config get telemetry 2>/dev/null || true)
+_TEL_PROMPTED=$([ -f ~/.aov-lab/.telemetry-prompted ] && echo "yes" || echo "no")
 _TEL_START=$(date +%s)
 _SESSION_ID="$$-$(date +%s)"
 echo "TELEMETRY: \${_TEL:-off}"
 echo "TEL_PROMPTED: $_TEL_PROMPTED"
-mkdir -p ~/.gstack/analytics
-echo '{"skill":"${ctx.skillName}","ts":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","repo":"'$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null || echo "unknown")'"}'  >> ~/.gstack/analytics/skill-usage.jsonl 2>/dev/null || true
-for _PF in ~/.gstack/analytics/.pending-*; do [ -f "$_PF" ] && ${ctx.paths.binDir}/gstack-telemetry-log --event-type skill_run --skill _pending_finalize --outcome unknown --session-id "$_SESSION_ID" 2>/dev/null || true; break; done
+mkdir -p ~/.aov-lab/analytics
+echo '{"skill":"${ctx.skillName}","ts":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","repo":"'$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null || echo "unknown")'"}'  >> ~/.aov-lab/analytics/skill-usage.jsonl 2>/dev/null || true
+for _PF in ~/.aov-lab/analytics/.pending-*; do [ -f "$_PF" ] && ${ctx.paths.binDir}/aov-lab-telemetry-log --event-type skill_run --skill _pending_finalize --outcome unknown --session-id "$_SESSION_ID" 2>/dev/null || true; break; done
 \`\`\``;
 }
 
 function generateUpgradeCheck(ctx: TemplateContext): string {
-  return `If \`PROACTIVE\` is \`"false"\`, do not proactively suggest gstack skills — only invoke
+  return `If \`PROACTIVE\` is \`"false"\`, do not proactively suggest aov-lab skills — only invoke
 them when the user explicitly asks. The user opted out of proactive suggestions.
 
-If output shows \`UPGRADE_AVAILABLE <old> <new>\`: read \`${ctx.paths.skillRoot}/gstack-upgrade/SKILL.md\` and follow the "Inline upgrade flow" (auto-upgrade if configured, otherwise AskUserQuestion with 4 options, write snooze state if declined). If \`JUST_UPGRADED <from> <to>\`: tell user "Running gstack v{to} (just updated!)" and continue.`;
+If output shows \`UPGRADE_AVAILABLE <old> <new>\`: read \`${ctx.paths.skillRoot}/aov-lab-upgrade/SKILL.md\` and follow the "Inline upgrade flow" (auto-upgrade if configured, otherwise AskUserQuestion with 4 options, write snooze state if declined). If \`JUST_UPGRADED <from> <to>\`: tell user "Running aov-lab v{to} (just updated!)" and continue.`;
 }
 
 function generateLakeIntro(): string {
   return `If \`LAKE_INTRO\` is \`no\`: Before continuing, introduce the Completeness Principle.
-Tell the user: "gstack follows the **Boil the Lake** principle — always do the complete
+Tell the user: "aov-lab follows the **Boil the Lake** principle — always do the complete
 thing when AI makes the marginal cost near-zero. Read more: https://garryslist.org/posts/boil-the-ocean"
 Then offer to open the essay in their default browser:
 
 \`\`\`bash
 open https://garryslist.org/posts/boil-the-ocean
-touch ~/.gstack/.completeness-intro-seen
+touch ~/.aov-lab/.completeness-intro-seen
 \`\`\`
 
 Only run \`open\` if the user says yes. Always run \`touch\` to mark as seen. This only happens once.`;
@@ -190,20 +190,20 @@ function generateTelemetryPrompt(ctx: TemplateContext): string {
   return `If \`TEL_PROMPTED\` is \`no\` AND \`LAKE_INTRO\` is \`yes\`: After the lake intro is handled,
 ask the user about telemetry. Use AskUserQuestion:
 
-> gstack can share anonymous usage data (which skills you use, how long they take, crash info)
+> aov-lab can share anonymous usage data (which skills you use, how long they take, crash info)
 > to help improve the project. No code, file paths, or repo names are ever sent.
-> Change anytime with \`gstack-config set telemetry off\`.
+> Change anytime with \`aov-lab-config set telemetry off\`.
 
 Options:
 - A) Yes, share anonymous data (recommended)
 - B) No thanks
 
-If A: run \`${ctx.paths.binDir}/gstack-config set telemetry anonymous\`
-If B: run \`${ctx.paths.binDir}/gstack-config set telemetry off\`
+If A: run \`${ctx.paths.binDir}/aov-lab-config set telemetry anonymous\`
+If B: run \`${ctx.paths.binDir}/aov-lab-config set telemetry off\`
 
 Always run:
 \`\`\`bash
-touch ~/.gstack/.telemetry-prompted
+touch ~/.aov-lab/.telemetry-prompted
 \`\`\`
 
 This only happens once. If \`TEL_PROMPTED\` is \`yes\`, skip this entirely.`;
@@ -228,11 +228,11 @@ function generateCompletenessSection(): string {
 
 AI-assisted coding makes the marginal cost of completeness near-zero. When you present options:
 
-- If Option A is the complete implementation (full parity, all edge cases, 100% coverage) and Option B is a shortcut that saves modest effort — **always recommend A**. The delta between 80 lines and 150 lines is meaningless with CC+gstack. "Good enough" is the wrong instinct when "complete" costs minutes more.
+- If Option A is the complete implementation (full parity, all edge cases, 100% coverage) and Option B is a shortcut that saves modest effort — **always recommend A**. The delta between 80 lines and 150 lines is meaningless with CC+aov-lab. "Good enough" is the wrong instinct when "complete" costs minutes more.
 - **Lake vs. ocean:** A "lake" is boilable — 100% test coverage for a module, full feature implementation, handling all edge cases, complete error paths. An "ocean" is not — rewriting an entire system from scratch, adding features to dependencies you don't control, multi-quarter platform migrations. Recommend boiling lakes. Flag oceans as out of scope.
-- **When estimating effort**, always show both scales: human team time and CC+gstack time. The compression ratio varies by task type — use this reference:
+- **When estimating effort**, always show both scales: human team time and CC+aov-lab time. The compression ratio varies by task type — use this reference:
 
-| Task type | Human team | CC+gstack | Compression |
+| Task type | Human team | CC+aov-lab | Compression |
 |-----------|-----------|-----------|-------------|
 | Boilerplate / scaffolding | 2 days | 15 min | ~100x |
 | Test writing | 1 day | 15 min | ~50x |
@@ -253,20 +253,20 @@ AI-assisted coding makes the marginal cost of completeness near-zero. When you p
 function generateContributorMode(): string {
   return `## Contributor Mode
 
-If \`_CONTRIB\` is \`true\`: you are in **contributor mode**. You're a gstack user who also helps make it better.
+If \`_CONTRIB\` is \`true\`: you are in **contributor mode**. You're a aov-lab user who also helps make it better.
 
-**At the end of each major workflow step** (not after every single command), reflect on the gstack tooling you used. Rate your experience 0 to 10. If it wasn't a 10, think about why. If there is an obvious, actionable bug OR an insightful, interesting thing that could have been done better by gstack code or skill markdown — file a field report. Maybe our contributor will help make us better!
+**At the end of each major workflow step** (not after every single command), reflect on the aov-lab tooling you used. Rate your experience 0 to 10. If it wasn't a 10, think about why. If there is an obvious, actionable bug OR an insightful, interesting thing that could have been done better by aov-lab code or skill markdown — file a field report. Maybe our contributor will help make us better!
 
-**Calibration — this is the bar:** For example, \`$B js "await fetch(...)"\` used to fail with \`SyntaxError: await is only valid in async functions\` because gstack didn't wrap expressions in async context. Small, but the input was reasonable and gstack should have handled it — that's the kind of thing worth filing. Things less consequential than this, ignore.
+**Calibration — this is the bar:** For example, \`$B js "await fetch(...)"\` used to fail with \`SyntaxError: await is only valid in async functions\` because aov-lab didn't wrap expressions in async context. Small, but the input was reasonable and aov-lab should have handled it — that's the kind of thing worth filing. Things less consequential than this, ignore.
 
 **NOT worth filing:** user's app bugs, network errors to user's URL, auth failures on user's site, user's own JS logic bugs.
 
-**To file:** write \`~/.gstack/contributor-logs/{slug}.md\` with **all sections below** (do not truncate — include every section through the Date/Version footer):
+**To file:** write \`~/.aov-lab/contributor-logs/{slug}.md\` with **all sections below** (do not truncate — include every section through the Date/Version footer):
 
 \`\`\`
 # {Title}
 
-Hey gstack team — ran into this while using /{skill-name}:
+Hey aov-lab team — ran into this while using /{skill-name}:
 
 **What I was trying to do:** {what the user/agent was attempting}
 **What happened instead:** {what actually happened}
@@ -281,12 +281,12 @@ Hey gstack team — ran into this while using /{skill-name}:
 \`\`\`
 
 ## What would make this a 10
-{one sentence: what gstack should have done differently}
+{one sentence: what aov-lab should have done differently}
 
-**Date:** {YYYY-MM-DD} | **Version:** {gstack version} | **Skill:** /{skill}
+**Date:** {YYYY-MM-DD} | **Version:** {aov-lab version} | **Skill:** /{skill}
 \`\`\`
 
-Slug: lowercase, hyphens, max 60 chars (e.g. \`browse-js-no-await\`). Skip if file already exists. Max 3 reports per session. File inline and continue — don't stop the workflow. Tell user: "Filed gstack field report: {title}"`;
+Slug: lowercase, hyphens, max 60 chars (e.g. \`browse-js-no-await\`). Skip if file already exists. Max 3 reports per session. File inline and continue — don't stop the workflow. Tell user: "Filed aov-lab field report: {title}"`;
 }
 
 function generateCompletionStatus(): string {
@@ -325,8 +325,8 @@ if it failed, abort if the user interrupted). Run this bash:
 \`\`\`bash
 _TEL_END=$(date +%s)
 _TEL_DUR=$(( _TEL_END - _TEL_START ))
-rm -f ~/.gstack/analytics/.pending-"$_SESSION_ID" 2>/dev/null || true
-~/.claude/skills/gstack/bin/gstack-telemetry-log \\
+rm -f ~/.aov-lab/analytics/.pending-"$_SESSION_ID" 2>/dev/null || true
+~/.claude/skills/aov-lab/bin/aov-lab-telemetry-log \\
   --skill "SKILL_NAME" --duration "$_TEL_DUR" --outcome "OUTCOME" \\
   --used-browse "USED_BROWSE" --session-id "$_SESSION_ID" 2>/dev/null &
 \`\`\`
@@ -366,7 +366,7 @@ fi
 \`\`\`
 
 If \`NEEDS_SETUP\`:
-1. Tell the user: "gstack browse needs a one-time build (~10 seconds). OK to proceed?" Then STOP and wait.
+1. Tell the user: "aov-lab browse needs a one-time build (~10 seconds). OK to proceed?" Then STOP and wait.
 2. Run: \`cd <SKILL_DIR> && ./setup\`
 3. If \`bun\` is not installed: \`curl -fsSL https://bun.sh/install | bash\``;
 }
@@ -675,10 +675,10 @@ Minimum 0 per category.
 function generateDesignReviewLite(_ctx: TemplateContext): string {
   return `## Design Review (conditional, diff-scoped)
 
-Check if the diff touches frontend files using \`gstack-diff-scope\`:
+Check if the diff touches frontend files using \`aov-lab-diff-scope\`:
 
 \`\`\`bash
-source <(~/.claude/skills/gstack/bin/gstack-diff-scope <base> 2>/dev/null)
+source <(~/.claude/skills/aov-lab/bin/aov-lab-diff-scope <base> 2>/dev/null)
 \`\`\`
 
 **If \`SCOPE_FRONTEND=false\`:** Skip design review silently. No output.
@@ -701,7 +701,7 @@ source <(~/.claude/skills/gstack/bin/gstack-diff-scope <base> 2>/dev/null)
 6. **Log the result** for the Review Readiness Dashboard:
 
 \`\`\`bash
-~/.claude/skills/gstack/bin/gstack-review-log '{"skill":"design-review-lite","timestamp":"TIMESTAMP","status":"STATUS","findings":N,"auto_fixed":M,"commit":"COMMIT"}'
+~/.claude/skills/aov-lab/bin/aov-lab-review-log '{"skill":"design-review-lite","timestamp":"TIMESTAMP","status":"STATUS","findings":N,"auto_fixed":M,"commit":"COMMIT"}'
 \`\`\`
 
 Substitute: TIMESTAMP = ISO 8601 datetime, STATUS = "clean" if 0 findings or "issues_found", N = total findings, M = auto-fixed count, COMMIT = output of \`git rev-parse --short HEAD\`.`;
@@ -955,13 +955,13 @@ Compare screenshots and observations across pages for:
 
 ### Output Locations
 
-**Local:** \`.gstack/design-reports/design-audit-{domain}-{YYYY-MM-DD}.md\`
+**Local:** \`.aov-lab/design-reports/design-audit-{domain}-{YYYY-MM-DD}.md\`
 
 **Project-scoped:**
 \`\`\`bash
-source <(~/.claude/skills/gstack/bin/gstack-slug 2>/dev/null) && mkdir -p ~/.gstack/projects/$SLUG
+source <(~/.claude/skills/aov-lab/bin/aov-lab-slug 2>/dev/null) && mkdir -p ~/.aov-lab/projects/$SLUG
 \`\`\`
-Write to: \`~/.gstack/projects/{slug}/{user}-{branch}-design-audit-{datetime}.md\`
+Write to: \`~/.aov-lab/projects/{slug}/{user}-{branch}-design-audit-{datetime}.md\`
 
 **Baseline:** Write \`design-baseline.json\` for regression mode:
 \`\`\`json
@@ -1048,7 +1048,7 @@ function generateReviewDashboard(_ctx: TemplateContext): string {
 After completing the review, read the review log and config to display the dashboard.
 
 \`\`\`bash
-~/.claude/skills/gstack/bin/gstack-review-read
+~/.claude/skills/aov-lab/bin/aov-lab-review-read
 \`\`\`
 
 Parse the output. Find the most recent entry for each skill (plan-ceo-review, plan-eng-review, plan-design-review, design-review-lite, codex-review). Ignore entries with timestamps older than 7 days. For Design Review, show whichever is more recent between \`plan-design-review\` (full visual audit) and \`design-review-lite\` (code-level check). Append "(FULL)" or "(LITE)" to the status to distinguish. Display:
@@ -1069,7 +1069,7 @@ Parse the output. Find the most recent entry for each skill (plan-ceo-review, pl
 \`\`\`
 
 **Review tiers:**
-- **Eng Review (required by default):** The only review that gates shipping. Covers architecture, code quality, tests, performance. Can be disabled globally with \\\`gstack-config set skip_eng_review true\\\` (the "don't bother me" setting).
+- **Eng Review (required by default):** The only review that gates shipping. Covers architecture, code quality, tests, performance. Can be disabled globally with \\\`aov-lab-config set skip_eng_review true\\\` (the "don't bother me" setting).
 - **CEO Review (optional):** Use your judgment. Recommend it for big product/business changes, new user-facing features, or scope decisions. Skip for bug fixes, refactors, infra, and cleanup.
 - **Design Review (optional):** Use your judgment. Recommend it for UI/UX changes. Skip for backend-only, infra, or prompt-only changes.
 - **Codex Review (optional):** Independent second opinion from OpenAI Codex CLI. Shows pass/fail gate. Recommend for critical code changes where a second AI perspective adds value. Skip when Codex CLI is not installed.
@@ -1108,7 +1108,7 @@ function generateTestBootstrap(_ctx: TemplateContext): string {
 ls jest.config.* vitest.config.* playwright.config.* .rspec pytest.ini pyproject.toml phpunit.xml 2>/dev/null
 ls -d test/ tests/ spec/ __tests__/ cypress/ e2e/ 2>/dev/null
 # Check opt-out marker
-[ -f .gstack/no-test-bootstrap ] && echo "BOOTSTRAP_DECLINED"
+[ -f .aov-lab/no-test-bootstrap ] && echo "BOOTSTRAP_DECLINED"
 \`\`\`
 
 **If test framework detected** (config files or test directories found):
@@ -1121,7 +1121,7 @@ Store conventions as prose context for use in Phase 8e.5 or Step 3.4. **Skip the
 **If NO runtime detected** (no config files found): Use AskUserQuestion:
 "I couldn't detect your project's language. What runtime are you using?"
 Options: A) Node.js/TypeScript B) Ruby/Rails C) Python D) Go E) Rust F) PHP G) Elixir H) This project doesn't need tests.
-If user picks H → write \`.gstack/no-test-bootstrap\` and continue without tests.
+If user picks H → write \`.aov-lab/no-test-bootstrap\` and continue without tests.
 
 **If runtime detected but no test framework — bootstrap:**
 
@@ -1153,7 +1153,7 @@ B) [Alternative] — [rationale]. Includes: [packages]
 C) Skip — don't set up testing right now
 RECOMMENDATION: Choose A because [reason based on project context]"
 
-If user picks C → write \`.gstack/no-test-bootstrap\`. Tell user: "If you change your mind later, delete \`.gstack/no-test-bootstrap\` and re-run." Continue without tests.
+If user picks C → write \`.aov-lab/no-test-bootstrap\`. Tell user: "If you change your mind later, delete \`.aov-lab/no-test-bootstrap\` and re-run." Continue without tests.
 
 If multiple runtimes detected (monorepo) → ask which runtime to set up first, with option to do both sequentially.
 
@@ -1258,10 +1258,10 @@ const RESOLVERS: Record<string, (ctx: TemplateContext) => string> = {
 // ─── Codex Helpers ───────────────────────────────────────────
 
 function codexSkillName(skillDir: string): string {
-  if (skillDir === '.' || skillDir === '') return 'gstack';
-  // Don't double-prefix: gstack-upgrade → gstack-upgrade (not gstack-gstack-upgrade)
-  if (skillDir.startsWith('gstack-')) return skillDir;
-  return `gstack-${skillDir}`;
+  if (skillDir === '.' || skillDir === '') return 'aov-lab';
+  // Don't double-prefix: aov-lab-upgrade → aov-lab-upgrade (not aov-lab-aov-lab-upgrade)
+  if (skillDir.startsWith('aov-lab-')) return skillDir;
+  return `aov-lab-${skillDir}`;
 }
 
 /**
@@ -1405,9 +1405,9 @@ function processTemplate(tmplPath: string, host: Host = 'claude'): { outputPath:
     }
 
     // Replace remaining hardcoded Claude paths with host-appropriate paths
-    content = content.replace(/~\/\.claude\/skills\/gstack/g, ctx.paths.skillRoot);
-    content = content.replace(/\.claude\/skills\/gstack/g, ctx.paths.localSkillRoot);
-    content = content.replace(/\.claude\/skills\/review/g, '.agents/skills/gstack/review');
+    content = content.replace(/~\/\.claude\/skills\/aov-lab/g, ctx.paths.skillRoot);
+    content = content.replace(/\.claude\/skills\/aov-lab/g, ctx.paths.localSkillRoot);
+    content = content.replace(/\.claude\/skills\/review/g, '.agents/skills/aov-lab/review');
     content = content.replace(/\.claude\/skills/g, '.agents/skills');
   }
 

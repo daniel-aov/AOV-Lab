@@ -78,7 +78,7 @@ export const E2E_TOUCHFILES: Record<string, string[]> = {
 
   // Codex E2E (tests skills via Codex CLI)
   'codex-discover-skill':  ['codex/**', '.agents/skills/**', 'test/helpers/codex-session-runner.ts'],
-  'codex-review-findings': ['review/**', '.agents/skills/gstack-review/**', 'codex/**', 'test/helpers/codex-session-runner.ts'],
+  'codex-review-findings': ['review/**', '.agents/skills/aov-lab-review/**', 'codex/**', 'test/helpers/codex-session-runner.ts'],
 
   // QA bootstrap
   'qa-bootstrap': ['qa/**', 'browse/src/**', 'ship/**'],
@@ -99,8 +99,8 @@ export const E2E_TOUCHFILES: Record<string, string[]> = {
   'research-exploration': ['research/**'],
   'research-deep-dive':   ['research/**'],
 
-  // gstack-upgrade
-  'gstack-upgrade-happy-path': ['gstack-upgrade/**'],
+  // aov-lab-upgrade
+  'aov-lab-upgrade-happy-path': ['aov-lab-upgrade/**'],
 
   // Skill routing — journey-stage tests (depend on ALL skill descriptions)
   'journey-ideation':       ['*/SKILL.md.tmpl', 'SKILL.md.tmpl', 'scripts/gen-skill-docs.ts'],
@@ -147,7 +147,7 @@ export const LLM_JUDGE_TOUCHFILES: Record<string, string[]> = {
   // Other skills
   'retro/SKILL.md instructions':          ['retro/SKILL.md', 'retro/SKILL.md.tmpl'],
   'qa-only/SKILL.md workflow':            ['qa-only/SKILL.md', 'qa-only/SKILL.md.tmpl'],
-  'gstack-upgrade/SKILL.md upgrade flow': ['gstack-upgrade/SKILL.md', 'gstack-upgrade/SKILL.md.tmpl'],
+  'aov-lab-upgrade/SKILL.md upgrade flow': ['aov-lab-upgrade/SKILL.md', 'aov-lab-upgrade/SKILL.md.tmpl'],
 };
 
 /**

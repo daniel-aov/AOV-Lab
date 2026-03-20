@@ -1,6 +1,6 @@
-// gstack update-check edge function
+// aov-lab update-check edge function
 // Logs an install ping and returns the current latest version.
-// Called by bin/gstack-update-check as a parallel background request.
+// Called by bin/aov-lab-update-check as a parallel background request.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
 
     // Log the update check (fire-and-forget)
     await supabase.from("update_checks").insert({
-      gstack_version: String(version).slice(0, 20),
+      aov_lab_version: String(version).slice(0, 20),
       os: String(os).slice(0, 20),
     });
 

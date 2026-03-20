@@ -1,5 +1,5 @@
 /**
- * Tests for bin/gstack-config bash script.
+ * Tests for bin/aov-lab-config bash script.
  *
  * Uses Bun.spawnSync to invoke the script with temp dirs and
  * GSTACK_STATE_DIR env override for full isolation.
@@ -10,7 +10,7 @@ import { mkdtempSync, writeFileSync, rmSync, readFileSync, existsSync } from 'fs
 import { join } from 'path';
 import { tmpdir } from 'os';
 
-const SCRIPT = join(import.meta.dir, '..', '..', 'bin', 'gstack-config');
+const SCRIPT = join(import.meta.dir, '..', '..', 'bin', 'aov-lab-config');
 
 let stateDir: string;
 
@@ -32,14 +32,14 @@ function run(args: string[] = [], extraEnv: Record<string, string> = {}) {
 }
 
 beforeEach(() => {
-  stateDir = mkdtempSync(join(tmpdir(), 'gstack-config-test-'));
+  stateDir = mkdtempSync(join(tmpdir(), 'aov-lab-config-test-'));
 });
 
 afterEach(() => {
   rmSync(stateDir, { recursive: true, force: true });
 });
 
-describe('gstack-config', () => {
+describe('aov-lab-config', () => {
   // ─── get ──────────────────────────────────────────────────
   test('get on missing file returns empty, exit 0', () => {
     const { exitCode, stdout } = run(['get', 'auto_upgrade']);

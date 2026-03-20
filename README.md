@@ -1,4 +1,4 @@
-# gstack
+# aov-lab
 
 Hi, I'm [Garry Tan](https://x.com/garrytan). I'm President & CEO of [Y Combinator](https://www.ycombinator.com/), where I've worked with thousands of startups including Coinbase, Instacart, and Rippling when the founders were just one or two people in a garage — companies now worth tens of billions of dollars. Before YC, I designed the Palantir logo and was one of the first eng manager/PM/designers there. I cofounded Posterous, a blog platform we sold to Twitter. I built Bookface, YC's internal social network, back in 2013. I've been building products as a designer, PM, and eng manager for a long time.
 
@@ -16,7 +16,7 @@ In the last 60 days I have written **over 600,000 lines of production code** —
 
 Same person. Different era. The difference is the tooling.
 
-**gstack is how I do it.** It is my open source software factory. It turns Claude Code into a virtual engineering team you actually manage — a CEO who rethinks the product, an eng manager who locks the architecture, a designer who catches AI slop, a paranoid reviewer who finds production bugs, a QA lead who opens a real browser and clicks through your app, and a release engineer who ships the PR. Fifteen specialists and six power tools, all as slash commands, all Markdown, **all free, MIT license, available right now.**
+**aov-lab is how I do it.** It is my open source software factory. It turns Claude Code into a virtual engineering team you actually manage — a CEO who rethinks the product, an eng manager who locks the architecture, a designer who catches AI slop, a paranoid reviewer who finds production bugs, a QA lead who opens a real browser and clicks through your app, and a release engineer who ships the PR. Fifteen specialists and six power tools, all as slash commands, all Markdown, **all free, MIT license, available right now.**
 
 I am learning how to get to the edge of what agentic systems can do as of March 2026, and this is my live experiment. I am sharing it because I want the whole world on this journey with me.
 
@@ -24,12 +24,12 @@ Fork it. Improve it. Make it yours. Don't player hate, appreciate.
 
 **Who this is for:**
 - **Founders and CEOs** — especially technical ones who still want to ship. This is how you build like a team of twenty.
-- **First-time Claude Code users** — gstack is the best way to start. Structured roles instead of a blank prompt.
+- **First-time Claude Code users** — aov-lab is the best way to start. Structured roles instead of a blank prompt.
 - **Tech leads and staff engineers** — bring rigorous review, QA, and release automation to every PR
 
 ## Quick start: your first 10 minutes
 
-1. Install gstack (30 seconds — see below)
+1. Install aov-lab (30 seconds — see below)
 2. Run `/office-hours` — describe what you're building. It will reframe the problem before you write a line of code.
 3. Run `/plan-ceo-review` on any feature idea
 4. Run `/review` on any branch with changes
@@ -48,31 +48,31 @@ Expect first useful run in under 5 minutes on any repo with tests already set up
 
 Open Claude Code and paste this. Claude does the rest.
 
-> Install gstack: run **`git clone https://github.com/garrytan/gstack.git ~/.claude/skills/gstack && cd ~/.claude/skills/gstack && ./setup`** then add a "gstack" section to CLAUDE.md that says to use the /browse skill from gstack for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, and lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /retro, /investigate, /document-release, /codex, /careful, /freeze, /guard, /unfreeze, /gstack-upgrade. Then ask the user if they also want to add gstack to the current project so teammates get it.
+> Install aov-lab: run **`git clone https://gitlab.com/aov.ai/aov-lab.git ~/.claude/skills/aov-lab && cd ~/.claude/skills/aov-lab && ./setup`** then add a "aov-lab" section to CLAUDE.md that says to use the /browse skill from aov-lab for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, and lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /retro, /investigate, /document-release, /codex, /careful, /freeze, /guard, /unfreeze, /aov-lab-upgrade. Then ask the user if they also want to add aov-lab to the current project so teammates get it.
 
 ### Step 2: Add to your repo so teammates get it (optional)
 
-> Add gstack to this project: run **`cp -Rf ~/.claude/skills/gstack .claude/skills/gstack && rm -rf .claude/skills/gstack/.git && cd .claude/skills/gstack && ./setup`** then add a "gstack" section to this project's CLAUDE.md that says to use the /browse skill from gstack for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /retro, /investigate, /document-release, /codex, /careful, /freeze, /guard, /unfreeze, /gstack-upgrade, and tells Claude that if gstack skills aren't working, run `cd .claude/skills/gstack && ./setup` to build the binary and register skills.
+> Add aov-lab to this project: run **`cp -Rf ~/.claude/skills/aov-lab .claude/skills/aov-lab && rm -rf .claude/skills/aov-lab/.git && cd .claude/skills/aov-lab && ./setup`** then add a "aov-lab" section to this project's CLAUDE.md that says to use the /browse skill from aov-lab for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /retro, /investigate, /document-release, /codex, /careful, /freeze, /guard, /unfreeze, /aov-lab-upgrade, and tells Claude that if aov-lab skills aren't working, run `cd .claude/skills/aov-lab && ./setup` to build the binary and register skills.
 
 Real files get committed to your repo (not a submodule), so `git clone` just works. Everything lives inside `.claude/`. Nothing touches your PATH or runs in the background.
 
 ### Codex, Gemini CLI, or Cursor
 
-gstack works on any agent that supports the [SKILL.md standard](https://github.com/anthropics/claude-code). Skills live in `.agents/skills/` and are discovered automatically.
+aov-lab works on any agent that supports the [SKILL.md standard](https://github.com/anthropics/claude-code). Skills live in `.agents/skills/` and are discovered automatically.
 
 ```bash
-git clone https://github.com/garrytan/gstack.git ~/.codex/skills/gstack
-cd ~/.codex/skills/gstack && ./setup --host codex
+git clone https://gitlab.com/aov.ai/aov-lab.git ~/.codex/skills/aov-lab
+cd ~/.codex/skills/aov-lab && ./setup --host codex
 ```
 
 Or let setup auto-detect which agents you have installed:
 
 ```bash
-git clone https://github.com/garrytan/gstack.git ~/gstack
-cd ~/gstack && ./setup --host auto
+git clone https://gitlab.com/aov.ai/aov-lab.git ~/aov-lab
+cd ~/aov-lab && ./setup --host auto
 ```
 
-This installs to `~/.claude/skills/gstack` and/or `~/.codex/skills/gstack` depending on what's available. All 21 skills work across all supported agents. Hook-based safety skills (careful, freeze, guard) use inline safety advisory prose on non-Claude hosts.
+This installs to `~/.claude/skills/aov-lab` and/or `~/.codex/skills/aov-lab` depending on what's available. All 21 skills work across all supported agents. Hook-based safety skills (careful, freeze, guard) use inline safety advisory prose on non-Claude hosts.
 
 ## See it work
 
@@ -119,13 +119,13 @@ You said "daily briefing app." The agent said "you're building a chief of staff 
 
 ## The sprint
 
-gstack is a process, not a collection of tools. The skills are ordered the way a sprint runs:
+aov-lab is a process, not a collection of tools. The skills are ordered the way a sprint runs:
 
 **Think → Plan → Build → Review → Test → Ship → Reflect**
 
 Each skill feeds into the next. `/office-hours` writes a design doc that `/plan-ceo-review` reads. `/plan-eng-review` writes a test plan that `/qa` picks up. `/review` catches bugs that `/ship` verifies are fixed. Nothing falls through the cracks because every step knows what came before it.
 
-One sprint, one person, one feature — that takes about 30 minutes with gstack. But here's what changes everything: you can run 10-15 of these sprints in parallel. Different features, different branches, different agents — all at the same time. That is how I ship 10,000+ lines of production code per day while doing my actual job.
+One sprint, one person, one feature — that takes about 30 minutes with aov-lab. But here's what changes everything: you can run 10-15 of these sprints in parallel. Different features, different branches, different agents — all at the same time. That is how I ship 10,000+ lines of production code per day while doing my actual job.
 
 | Skill | Your specialist | What they do |
 |-------|----------------|--------------|
@@ -154,7 +154,7 @@ One sprint, one person, one feature — that takes about 30 minutes with gstack.
 | `/freeze` | **Edit Lock** — restrict file edits to one directory. Prevents accidental changes outside scope while debugging. |
 | `/guard` | **Full Safety** — `/careful` + `/freeze` in one command. Maximum safety for prod work. |
 | `/unfreeze` | **Unlock** — remove the `/freeze` boundary. |
-| `/gstack-upgrade` | **Self-Updater** — upgrade gstack to latest. Detects global vs vendored install, syncs both, shows what changed. |
+| `/aov-lab-upgrade` | **Self-Updater** — upgrade aov-lab to latest. Detects global vs vendored install, syncs both, shows what changed. |
 
 **[Deep dives with examples and philosophy for every skill →](docs/skills.md)**
 
@@ -166,7 +166,7 @@ One sprint, one person, one feature — that takes about 30 minutes with gstack.
 
 **`/qa` was a massive unlock.** It let me go from 6 to 12 parallel workers. Claude Code saying *"I SEE THE ISSUE"* and then actually fixing it, generating a regression test, and verifying the fix — that changed how I work. The agent has eyes now.
 
-**Smart review routing.** Just like at a well-run startup: CEO doesn't have to look at infra bug fixes, design review isn't needed for backend changes. gstack tracks what reviews are run, figures out what's appropriate, and just does the smart thing. The Review Readiness Dashboard tells you where you stand before you ship.
+**Smart review routing.** Just like at a well-run startup: CEO doesn't have to look at infra bug fixes, design review isn't needed for backend changes. aov-lab tracks what reviews are run, figures out what's appropriate, and just does the smart thing. The Review Readiness Dashboard tells you where you stand before you ship.
 
 **Test everything.** `/ship` bootstraps test frameworks from scratch if your project doesn't have one. Every `/ship` run produces a coverage audit. Every `/qa` bug fix generates a regression test. 100% test coverage is the goal — tests make vibe coding safe instead of yolo coding.
 
@@ -178,11 +178,11 @@ One sprint, one person, one feature — that takes about 30 minutes with gstack.
 
 **Safety guardrails on demand.** Say "be careful" and `/careful` warns before any destructive command — rm -rf, DROP TABLE, force-push, git reset --hard. `/freeze` locks edits to one directory while debugging so Claude can't accidentally "fix" unrelated code. `/guard` activates both. `/investigate` auto-freezes to the module being investigated.
 
-**Proactive skill suggestions.** gstack notices what stage you're in — brainstorming, reviewing, debugging, testing — and suggests the right skill. Don't like it? Say "stop suggesting" and it remembers across sessions.
+**Proactive skill suggestions.** aov-lab notices what stage you're in — brainstorming, reviewing, debugging, testing — and suggests the right skill. Don't like it? Say "stop suggesting" and it remembers across sessions.
 
 ## 10-15 parallel sprints
 
-gstack is powerful with one sprint. It is transformative with ten running at once.
+aov-lab is powerful with one sprint. It is transformative with ten running at once.
 
 [Conductor](https://conductor.build) runs multiple Claude Code sessions in parallel — each in its own isolated workspace. One session running `/office-hours` on a new idea, another doing `/review` on a PR, a third implementing a feature, a fourth running `/qa` on staging, and six more on other branches. All at the same time. I regularly run 10-15 parallel sprints — that's the practical max right now.
 
@@ -196,13 +196,13 @@ This is **free, MIT licensed, open source, available now.** No premium tier. No 
 
 I open sourced how I do development and I am actively upgrading my own software factory here. You can fork it and make it your own. That's the whole point. I want everyone on this journey.
 
-Same tools, different outcome — because gstack gives you structured roles and review gates, not generic agent chaos. That governance is the difference between shipping fast and shipping reckless.
+Same tools, different outcome — because aov-lab gives you structured roles and review gates, not generic agent chaos. That governance is the difference between shipping fast and shipping reckless.
 
 The models are getting better fast. The people who figure out how to work with them now — really work with them, not just dabble — are going to have a massive advantage. This is that window. Let's go.
 
-Fifteen specialists and six power tools. All slash commands. All Markdown. All free. **[github.com/garrytan/gstack](https://github.com/garrytan/gstack)** — MIT License
+Fifteen specialists and six power tools. All slash commands. All Markdown. All free. **[gitlab.com/aov.ai/aov-lab](https://gitlab.com/aov.ai/aov-lab)** — MIT License
 
-> **We're hiring.** Want to ship 10K+ LOC/day and help harden gstack?
+> **We're hiring.** Want to ship 10K+ LOC/day and help harden aov-lab?
 > Come work at YC — [ycombinator.com/software](https://ycombinator.com/software)
 > Extremely competitive salary and equity. San Francisco, Dogpatch District.
 
@@ -218,35 +218,35 @@ Fifteen specialists and six power tools. All slash commands. All Markdown. All f
 
 ## Privacy & Telemetry
 
-gstack includes **opt-in** usage telemetry to help improve the project. Here's exactly what happens:
+aov-lab includes **opt-in** usage telemetry to help improve the project. Here's exactly what happens:
 
 - **Default is off.** Nothing is sent anywhere unless you explicitly say yes.
-- **On first run,** gstack asks if you want to share anonymous usage data. You can say no.
-- **What's sent (if you opt in):** skill name, duration, success/fail, gstack version, OS. That's it.
+- **On first run,** aov-lab asks if you want to share anonymous usage data. You can say no.
+- **What's sent (if you opt in):** skill name, duration, success/fail, aov-lab version, OS. That's it.
 - **What's never sent:** code, file paths, repo names, branch names, prompts, or any user-generated content.
-- **Change anytime:** `gstack-config set telemetry off` disables everything instantly.
+- **Change anytime:** `aov-lab-config set telemetry off` disables everything instantly.
 
 Data is stored in [Supabase](https://supabase.com) (open source Firebase alternative). The schema is in [`supabase/migrations/001_telemetry.sql`](supabase/migrations/001_telemetry.sql) — you can verify exactly what's collected. The Supabase publishable key in the repo is a public key (like a Firebase API key) — row-level security policies restrict it to insert-only access.
 
-**Local analytics are always available.** Run `gstack-analytics` to see your personal usage dashboard from the local JSONL file — no remote data needed.
+**Local analytics are always available.** Run `aov-lab-analytics` to see your personal usage dashboard from the local JSONL file — no remote data needed.
 
 ## Troubleshooting
 
-**Skill not showing up?** `cd ~/.claude/skills/gstack && ./setup`
+**Skill not showing up?** `cd ~/.claude/skills/aov-lab && ./setup`
 
-**`/browse` fails?** `cd ~/.claude/skills/gstack && bun install && bun run build`
+**`/browse` fails?** `cd ~/.claude/skills/aov-lab && bun install && bun run build`
 
-**Stale install?** Run `/gstack-upgrade` — or set `auto_upgrade: true` in `~/.gstack/config.yaml`
+**Stale install?** Run `/aov-lab-upgrade` — or set `auto_upgrade: true` in `~/.aov-lab/config.yaml`
 
-**Claude says it can't see the skills?** Make sure your project's `CLAUDE.md` has a gstack section. Add this:
+**Claude says it can't see the skills?** Make sure your project's `CLAUDE.md` has a aov-lab section. Add this:
 
 ```
-## gstack
-Use /browse from gstack for all web browsing. Never use mcp__claude-in-chrome__* tools.
+## aov-lab
+Use /browse from aov-lab for all web browsing. Never use mcp__claude-in-chrome__* tools.
 Available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review,
 /design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review,
 /setup-browser-cookies, /retro, /investigate, /document-release, /codex, /careful,
-/freeze, /guard, /unfreeze, /gstack-upgrade.
+/freeze, /guard, /unfreeze, /aov-lab-upgrade.
 ```
 
 ## License

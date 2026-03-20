@@ -6,7 +6,7 @@ description: |
   market trends, pain points, competitors, technical landscape, and gaps.
   Two modes: Exploration (broad thesis to narrow opportunities) and Deep-dive
   (focused competitive/market analysis on a specific topic).
-  Saves structured research reports to ~/.gstack/projects/.
+  Saves structured research reports to ~/.aov-lab/projects/.
   Use when asked to "research this", "what's the market for", "who are the
   competitors", "Shopify app landscape", or "find opportunities".
   Proactively suggest when the user is exploring a new product area, evaluating
@@ -44,16 +44,16 @@ You are a **senior ecommerce analyst and Shopify ecosystem expert**. Your job is
 ## Phase 0: Context & Mode Selection
 
 ```bash
-source <(~/.claude/skills/gstack/bin/gstack-slug 2>/dev/null)
+source <(~/.claude/skills/aov-lab/bin/aov-lab-slug 2>/dev/null)
 ```
 
 1. Read `CLAUDE.md`, `TODOS.md` (if they exist).
 2. Run `git log --oneline -15` to understand project context.
 3. Check for existing research and design docs:
    ```bash
-   source <(~/.claude/skills/gstack/bin/gstack-slug 2>/dev/null) && mkdir -p ~/.gstack/projects/$SLUG
-   echo "=== Prior research ===" && ls -t ~/.gstack/projects/$SLUG/*-research-*.md 2>/dev/null || echo "None"
-   echo "=== Prior designs ===" && ls -t ~/.gstack/projects/$SLUG/*-design-*.md 2>/dev/null || echo "None"
+   source <(~/.claude/skills/aov-lab/bin/aov-lab-slug 2>/dev/null) && mkdir -p ~/.aov-lab/projects/$SLUG
+   echo "=== Prior research ===" && ls -t ~/.aov-lab/projects/$SLUG/*-research-*.md 2>/dev/null || echo "None"
+   echo "=== Prior designs ===" && ls -t ~/.aov-lab/projects/$SLUG/*-design-*.md 2>/dev/null || echo "None"
    ```
    If prior research exists, list titles + dates: "Prior research for this project: [titles]"
    If prior design docs exist (from /office-hours), read them — they provide product context.
@@ -314,7 +314,7 @@ Present the opportunity map to the user before writing the report.
 Write the research report.
 
 ```bash
-source <(~/.claude/skills/gstack/bin/gstack-slug 2>/dev/null) && mkdir -p ~/.gstack/projects/$SLUG
+source <(~/.claude/skills/aov-lab/bin/aov-lab-slug 2>/dev/null) && mkdir -p ~/.aov-lab/projects/$SLUG
 USER=$(whoami)
 DATETIME=$(date +%Y%m%d-%H%M%S)
 BRANCH=$(git branch --show-current 2>/dev/null || echo "unknown")
@@ -322,11 +322,11 @@ BRANCH=$(git branch --show-current 2>/dev/null || echo "unknown")
 
 Check for prior research on this branch (lineage):
 ```bash
-PRIOR=$(ls -t ~/.gstack/projects/$SLUG/*-research-*.md 2>/dev/null | head -1)
+PRIOR=$(ls -t ~/.aov-lab/projects/$SLUG/*-research-*.md 2>/dev/null | head -1)
 [ -n "$PRIOR" ] && echo "Supersedes: $(basename $PRIOR)" || echo "First research on this branch"
 ```
 
-Write to `~/.gstack/projects/{slug}/{user}-{branch}-research-{datetime}.md`:
+Write to `~/.aov-lab/projects/{slug}/{user}-{branch}-research-{datetime}.md`:
 
 ```markdown
 # Research: {topic/thesis}
@@ -397,7 +397,7 @@ If approved, confirm the save path. If revise, loop back to fix specific section
 
 After the research report is approved:
 
-"Research report saved to `~/.gstack/projects/{slug}/{filename}`. This report is automatically discoverable by downstream skills."
+"Research report saved to `~/.aov-lab/projects/{slug}/{filename}`. This report is automatically discoverable by downstream skills."
 
 Suggest next steps based on what was found:
 

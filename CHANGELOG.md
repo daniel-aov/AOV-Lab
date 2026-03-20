@@ -2,7 +2,7 @@
 
 ## [0.9.0] - 2026-03-19 — Works on Codex, Gemini CLI, and Cursor
 
-**gstack now works on any AI agent that supports the open SKILL.md standard.** Install once, use from Claude Code, OpenAI Codex CLI, Google Gemini CLI, or Cursor. All 21 skills are available in `.agents/skills/` -- just run `./setup --host codex` or `./setup --host auto` and your agent discovers them automatically.
+**aov-lab now works on any AI agent that supports the open SKILL.md standard.** Install once, use from Claude Code, OpenAI Codex CLI, Google Gemini CLI, or Cursor. All 21 skills are available in `.agents/skills/` -- just run `./setup --host codex` or `./setup --host auto` and your agent discovers them automatically.
 
 - **One install, four agents.** Claude Code reads from `.claude/skills/`, everything else reads from `.agents/skills/`. Same skills, same prompts, adapted for each host. Hook-based safety skills (careful, freeze, guard) get inline safety advisory prose instead of hooks -- they work everywhere.
 - **Auto-detection.** `./setup --host auto` detects which agents you have installed and sets up both. Already have Claude Code? It still works exactly the same.
@@ -13,21 +13,21 @@
 
 ### Added
 
-- **You can now see how you use gstack.** Run `gstack-analytics` to see a personal usage dashboard — which skills you use most, how long they take, your success rate. All data stays local on your machine.
-- **Opt-in community telemetry.** On first run, gstack asks if you want to share anonymous usage data (skill names, duration, crash info — never code or file paths). Choose "yes" and you're part of the community pulse. Change anytime with `gstack-config set telemetry off`.
-- **Community health dashboard.** Run `gstack-community-dashboard` to see what the gstack community is building — most popular skills, crash clusters, version distribution. All powered by Supabase.
-- **Install base tracking via update check.** When telemetry is enabled, gstack fires a parallel ping to Supabase during update checks — giving us an install-base count without adding any latency. Respects your telemetry setting (default off). GitHub remains the primary version source.
+- **You can now see how you use aov-lab.** Run `aov-lab-analytics` to see a personal usage dashboard — which skills you use most, how long they take, your success rate. All data stays local on your machine.
+- **Opt-in community telemetry.** On first run, aov-lab asks if you want to share anonymous usage data (skill names, duration, crash info — never code or file paths). Choose "yes" and you're part of the community pulse. Change anytime with `aov-lab-config set telemetry off`.
+- **Community health dashboard.** Run `aov-lab-community-dashboard` to see what the aov-lab community is building — most popular skills, crash clusters, version distribution. All powered by Supabase.
+- **Install base tracking via update check.** When telemetry is enabled, aov-lab fires a parallel ping to Supabase during update checks — giving us an install-base count without adding any latency. Respects your telemetry setting (default off). GitHub remains the primary version source.
 - **Crash clustering.** Errors are automatically grouped by type and version in the Supabase backend, so the most impactful bugs surface first.
 - **Upgrade funnel tracking.** We can now see how many people see upgrade prompts vs actually upgrade — helps us ship better releases.
-- **/retro now shows your gstack usage.** Weekly retrospectives include skill usage stats (which skills you used, how often, success rate) alongside your commit history.
-- **Session-specific pending markers.** If a skill crashes mid-run, the next invocation correctly finalizes only that session — no more race conditions between concurrent gstack sessions.
+- **/retro now shows your aov-lab usage.** Weekly retrospectives include skill usage stats (which skills you used, how often, success rate) alongside your commit history.
+- **Session-specific pending markers.** If a skill crashes mid-run, the next invocation correctly finalizes only that session — no more race conditions between concurrent aov-lab sessions.
 
 ## [0.8.5] - 2026-03-19
 
 ### Fixed
 
 - **`/retro` now counts full calendar days.** Running a retro late at night no longer silently misses commits from earlier in the day. Git treats bare dates like `--since="2026-03-11"` as "11pm on March 11" if you run it at 11pm — now we pass `--since="2026-03-11T00:00:00"` so it always starts from midnight. Compare mode windows get the same fix.
-- **Review log no longer breaks on branch names with `/`.** Branch names like `garrytan/design-system` caused review log writes to fail because Claude Code runs multi-line bash blocks as separate shell invocations, losing variables between commands. New `gstack-review-log` and `gstack-review-read` atomic helpers encapsulate the entire operation in a single command.
+- **Review log no longer breaks on branch names with `/`.** Branch names like `garrytan/design-system` caused review log writes to fail because Claude Code runs multi-line bash blocks as separate shell invocations, losing variables between commands. New `aov-lab-review-log` and `aov-lab-review-read` atomic helpers encapsulate the entire operation in a single command.
 - **All skill templates are now platform-agnostic.** Removed Rails-specific patterns (`bin/test-lane`, `RAILS_ENV`, `.includes()`, `rescue StandardError`, etc.) from `/ship`, `/review`, `/plan-ceo-review`, and `/plan-eng-review`. The review checklist now shows examples for Rails, Node, Python, and Django side-by-side.
 - **`/ship` reads CLAUDE.md to discover test commands** instead of hardcoding `bin/test-lane` and `npm run test`. If no test commands are found, it asks the user and persists the answer to CLAUDE.md.
 
@@ -41,9 +41,9 @@
 ### Added
 
 - **`/ship` now automatically syncs your docs.** After creating the PR, `/ship` runs `/document-release` as Step 8.5 — README, ARCHITECTURE, CONTRIBUTING, and CLAUDE.md all stay current without an extra command. No more stale docs after shipping.
-- **Six new skills in the docs.** README, docs/skills.md, and BROWSER.md now cover `/codex` (multi-AI second opinion), `/careful` (destructive command warnings), `/freeze` (directory-scoped edit lock), `/guard` (full safety mode), `/unfreeze`, and `/gstack-upgrade`. The sprint skill table keeps its 15 specialists; a new "Power tools" section covers the rest.
+- **Six new skills in the docs.** README, docs/skills.md, and BROWSER.md now cover `/codex` (multi-AI second opinion), `/careful` (destructive command warnings), `/freeze` (directory-scoped edit lock), `/guard` (full safety mode), `/unfreeze`, and `/aov-lab-upgrade`. The sprint skill table keeps its 15 specialists; a new "Power tools" section covers the rest.
 - **Browse handoff documented everywhere.** BROWSER.md command table, docs/skills.md deep-dive, and README "What's new" all explain `$B handoff` and `$B resume` for CAPTCHA/MFA/auth walls.
-- **Proactive suggestions know about all skills.** Root SKILL.md.tmpl now suggests `/codex`, `/careful`, `/freeze`, `/guard`, `/unfreeze`, and `/gstack-upgrade` at the right workflow stages.
+- **Proactive suggestions know about all skills.** Root SKILL.md.tmpl now suggests `/codex`, `/careful`, `/freeze`, `/guard`, `/unfreeze`, and `/aov-lab-upgrade` at the right workflow stages.
 
 ## [0.8.3] - 2026-03-19
 
@@ -58,8 +58,8 @@
 
 - **Browse no longer navigates to dangerous URLs.** `goto`, `diff`, and `newtab` now block `file://`, `javascript:`, `data:` schemes and cloud metadata endpoints (`169.254.169.254`, `metadata.google.internal`). Localhost and private IPs are still allowed for local QA testing. (Closes #17)
 - **Setup script tells you what's missing.** Running `./setup` without `bun` installed now shows a clear error with install instructions instead of a cryptic "command not found." (Closes #147)
-- **`/debug` renamed to `/investigate`.** Claude Code has a built-in `/debug` command that shadowed the gstack skill. The systematic root-cause debugging workflow now lives at `/investigate`. (Closes #190)
-- **Shell injection surface removed.** All skill templates now use `source <(gstack-slug)` instead of `eval $(gstack-slug)`. Same behavior, no `eval`. (Closes #133)
+- **`/debug` renamed to `/investigate`.** Claude Code has a built-in `/debug` command that shadowed the aov-lab skill. The systematic root-cause debugging workflow now lives at `/investigate`. (Closes #190)
+- **Shell injection surface removed.** All skill templates now use `source <(aov-lab-slug)` instead of `eval $(aov-lab-slug)`. Same behavior, no `eval`. (Closes #133)
 - **25 new security tests.** URL validation (16 tests) and path traversal validation (14 tests) now have dedicated unit test suites covering scheme blocking, metadata IP blocking, directory escapes, and prefix collision edge cases.
 
 ## [0.8.2] - 2026-03-19
@@ -91,7 +91,7 @@ When both `/review` (Claude) and `/codex review` have run, you get a cross-model
 
 **Integrated everywhere.** After `/review` finishes, it offers a Codex second opinion. During `/ship`, you can run Codex review as an optional gate before pushing. In `/plan-eng-review`, Codex can independently critique your plan before the engineering review begins. All Codex results show up in the Review Readiness Dashboard.
 
-**Also in this release:** Proactive skill suggestions — gstack now notices what stage of development you're in and suggests the right skill. Don't like it? Say "stop suggesting" and it remembers across sessions.
+**Also in this release:** Proactive skill suggestions — aov-lab now notices what stage of development you're in and suggests the right skill. Don't like it? Say "stop suggesting" and it remembers across sessions.
 
 ## [0.7.4] - 2026-03-18
 
@@ -107,7 +107,7 @@ When both `/review` (Claude) and `/codex review` have run, you get a cross-model
 - **Lock edits to one folder with `/freeze`.** Debugging something and don't want Claude to "fix" unrelated code? `/freeze` blocks all file edits outside a directory you choose. Hard block, not just a warning. Run `/unfreeze` to remove the restriction without ending your session.
 - **`/guard` activates both at once.** One command for maximum safety when touching prod or live systems — destructive command warnings plus directory-scoped edit restrictions.
 - **`/debug` now auto-freezes edits to the module being debugged.** After forming a root cause hypothesis, `/debug` locks edits to the narrowest affected directory. No more accidental "fixes" to unrelated code during debugging.
-- **You can now see which skills you use and how often.** Every skill invocation is logged locally to `~/.gstack/analytics/skill-usage.jsonl`. Run `bun run analytics` to see your top skills, per-repo breakdown, and how often safety hooks actually catch something. Data stays on your machine.
+- **You can now see which skills you use and how often.** Every skill invocation is logged locally to `~/.aov-lab/analytics/skill-usage.jsonl`. Run `bun run analytics` to see your top skills, per-repo breakdown, and how often safety hooks actually catch something. Data stays on your machine.
 - **Weekly retros now include skill usage.** `/retro` shows which skills you used during the retro window alongside your usual commit analysis and metrics.
 
 ## [0.7.2] - 2026-03-18
@@ -121,9 +121,9 @@ When both `/review` (Claude) and `/codex review` have run, you get a cross-model
 
 ### Added
 
-- **gstack now suggests skills at natural moments.** You don't need to know slash commands — just talk about what you're doing. Brainstorming an idea? gstack suggests `/office-hours`. Something's broken? It suggests `/debug`. Ready to deploy? It suggests `/ship`. Every workflow skill now has proactive triggers that fire when the moment is right.
-- **Lifecycle map.** gstack's root skill description now includes a developer workflow guide mapping 12 stages (brainstorm → plan → review → code → debug → test → ship → docs → retro) to the right skill. Claude sees this in every session.
-- **Opt-out with natural language.** If proactive suggestions feel too aggressive, just say "stop suggesting things" — gstack remembers across sessions. Say "be proactive again" to re-enable.
+- **aov-lab now suggests skills at natural moments.** You don't need to know slash commands — just talk about what you're doing. Brainstorming an idea? aov-lab suggests `/office-hours`. Something's broken? It suggests `/debug`. Ready to deploy? It suggests `/ship`. Every workflow skill now has proactive triggers that fire when the moment is right.
+- **Lifecycle map.** aov-lab's root skill description now includes a developer workflow guide mapping 12 stages (brainstorm → plan → review → code → debug → test → ship → docs → retro) to the right skill. Claude sees this in every session.
+- **Opt-out with natural language.** If proactive suggestions feel too aggressive, just say "stop suggesting things" — aov-lab remembers across sessions. Say "be proactive again" to re-enable.
 - **11 journey-stage E2E tests.** Each test simulates a real moment in the developer lifecycle with realistic project context (plan.md, error logs, git history, code) and verifies the right skill fires from natural language alone. 11/11 pass.
 - **Trigger phrase validation.** Static tests verify every workflow skill has "Use when" and "Proactively suggest" phrases — catches regressions for free.
 
@@ -155,7 +155,7 @@ When something is broken and you don't know why, `/debug` is your systematic deb
 
 - **`/plan-design-review` is now interactive — rates 0-10, fixes the plan.** Instead of producing a report with letter grades, the designer now works like CEO and Eng review: rates each design dimension 0-10, explains what a 10 looks like, then edits the plan to get there. One AskUserQuestion per design choice. The output is a better plan, not a document about the plan.
 - **CEO review now calls in the designer.** When `/plan-ceo-review` detects UI scope in a plan, it activates a Design & UX section (Section 11) covering information architecture, interaction state coverage, AI slop risk, and responsive intention. For deep design work, it recommends `/plan-design-review`.
-- **14 of 15 skills now have full test coverage (E2E + LLM-judge + validation).** Added LLM-judge quality evals for 10 skills that were missing them: ship, retro, qa-only, plan-ceo-review, plan-eng-review, plan-design-review, design-review, design-consultation, document-release, gstack-upgrade. Added real E2E test for gstack-upgrade (was a `.todo`). Added design-consultation to command validation.
+- **14 of 15 skills now have full test coverage (E2E + LLM-judge + validation).** Added LLM-judge quality evals for 10 skills that were missing them: ship, retro, qa-only, plan-ceo-review, plan-eng-review, plan-design-review, design-review, design-consultation, document-release, aov-lab-upgrade. Added real E2E test for aov-lab-upgrade (was a `.todo`). Added design-consultation to command validation.
 - **Bisect commit style.** CLAUDE.md now requires every commit to be a single logical change — renames separate from rewrites, test infrastructure separate from test implementations.
 
 ### Changed
@@ -167,7 +167,7 @@ When something is broken and you don't know why, `/debug` is your systematic deb
 ### Added
 
 - **Every PR touching frontend code now gets a design review automatically.** `/review` and `/ship` apply a 20-item design checklist against changed CSS, HTML, JSX, and view files. Catches AI slop patterns (purple gradients, 3-column icon grids, generic hero copy), typography issues (body text < 16px, blacklisted fonts), accessibility gaps (`outline: none`), and `!important` abuse. Mechanical CSS fixes are auto-applied; design judgment calls ask you first.
-- **`gstack-diff-scope` categorizes what changed in your branch.** Run `source <(gstack-diff-scope main)` and get `SCOPE_FRONTEND=true/false`, `SCOPE_BACKEND`, `SCOPE_PROMPTS`, `SCOPE_TESTS`, `SCOPE_DOCS`, `SCOPE_CONFIG`. Design review uses it to skip silently on backend-only PRs. Ship pre-flight uses it to recommend design review when frontend files are touched.
+- **`aov-lab-diff-scope` categorizes what changed in your branch.** Run `source <(aov-lab-diff-scope main)` and get `SCOPE_FRONTEND=true/false`, `SCOPE_BACKEND`, `SCOPE_PROMPTS`, `SCOPE_TESTS`, `SCOPE_DOCS`, `SCOPE_CONFIG`. Design review uses it to skip silently on backend-only PRs. Ship pre-flight uses it to recommend design review when frontend files are touched.
 - **Design review shows up in the Review Readiness Dashboard.** The dashboard now distinguishes between "LITE" (code-level, runs automatically in /review and /ship) and "FULL" (visual audit via /plan-design-review with browse binary). Both show up as Design Review entries.
 - **E2E eval for design review detection.** Planted CSS/HTML fixtures with 7 known anti-patterns (Papyrus font, 14px body text, `outline: none`, `!important`, purple gradient, generic hero copy, 3-column feature grid). The eval verifies `/review` catches at least 4 of 7.
 
@@ -193,7 +193,7 @@ When something is broken and you don't know why, `/debug` is your systematic deb
 
 ## 0.6.1 — 2026-03-17 — Boil the Lake
 
-Every gstack skill now follows the **Completeness Principle**: always recommend the
+Every aov-lab skill now follows the **Completeness Principle**: always recommend the
 full implementation when AI makes the marginal cost near-zero. No more "Choose B
 because it's 90% of the value" when option A is 70 lines more code.
 
@@ -201,7 +201,7 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 
 - **Completeness scoring**: every AskUserQuestion option now shows a completeness
   score (1-10), biasing toward the complete solution
-- **Dual time estimates**: effort estimates show both human-team and CC+gstack time
+- **Dual time estimates**: effort estimates show both human-team and CC+aov-lab time
   (e.g., "human: ~2 weeks / CC: ~1 hour") with a task-type compression reference table
 - **Anti-pattern examples**: concrete "don't do this" gallery in the preamble so the
   principle isn't abstract
@@ -216,17 +216,17 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 
 ## 0.6.0.1 — 2026-03-17
 
-- **`/gstack-upgrade` now catches stale vendored copies automatically.** If your global gstack is up to date but the vendored copy in your project is behind, `/gstack-upgrade` detects the mismatch and syncs it. No more manually asking "did we vendor it?" — it just tells you and offers to update.
-- **Upgrade sync is safer.** If `./setup` fails while syncing a vendored copy, gstack restores the previous version from backup instead of leaving a broken install.
+- **`/aov-lab-upgrade` now catches stale vendored copies automatically.** If your global aov-lab is up to date but the vendored copy in your project is behind, `/aov-lab-upgrade` detects the mismatch and syncs it. No more manually asking "did we vendor it?" — it just tells you and offers to update.
+- **Upgrade sync is safer.** If `./setup` fails while syncing a vendored copy, aov-lab restores the previous version from backup instead of leaving a broken install.
 
 ### For contributors
 
-- Standalone usage section in `gstack-upgrade/SKILL.md.tmpl` now references Steps 2 and 4.5 (DRY) instead of duplicating detection/sync bash blocks. Added one new version-comparison bash block.
+- Standalone usage section in `aov-lab-upgrade/SKILL.md.tmpl` now references Steps 2 and 4.5 (DRY) instead of duplicating detection/sync bash blocks. Added one new version-comparison bash block.
 - Update check fallback in standalone mode now matches the preamble pattern (global path → local path → `|| true`).
 
 ## 0.6.0 — 2026-03-17
 
-- **100% test coverage is the key to great vibe coding.** gstack now bootstraps test frameworks from scratch when your project doesn't have one. Detects your runtime, researches the best framework, asks you to pick, installs it, writes 3-5 real tests for your actual code, sets up CI/CD (GitHub Actions), creates TESTING.md, and adds test culture instructions to CLAUDE.md. Every Claude Code session after that writes tests naturally.
+- **100% test coverage is the key to great vibe coding.** aov-lab now bootstraps test frameworks from scratch when your project doesn't have one. Detects your runtime, researches the best framework, asks you to pick, installs it, writes 3-5 real tests for your actual code, sets up CI/CD (GitHub Actions), creates TESTING.md, and adds test culture instructions to CLAUDE.md. Every Claude Code session after that writes tests naturally.
 - **Every bug fix now gets a regression test.** When `/qa` fixes a bug and verifies it, Phase 8e.5 automatically generates a regression test that catches the exact scenario that broke. Tests include full attribution tracing back to the QA report. Auto-incrementing filenames prevent collisions across sessions.
 - **Ship with confidence — coverage audit shows what's tested and what's not.** `/ship` Step 3.4 builds a code path map from your diff, searches for corresponding tests, and produces an ASCII coverage diagram with quality stars (★★★ = edge cases + errors, ★★ = happy path, ★ = smoke test). Gaps get tests auto-generated. PR body shows "Tests: 42 → 47 (+5 new)".
 - **Your retro tracks test health.** `/retro` now shows total test files, tests added this period, regression test commits, and trend deltas. If test ratio drops below 20%, it flags it as a growth area.
@@ -260,9 +260,9 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 
 - **You're always in control — even when dreaming big.** `/plan-ceo-review` now presents every scope expansion as an individual decision you opt into. EXPANSION mode recommends enthusiastically, but you say yes or no to each idea. No more "the agent went wild and added 5 features I didn't ask for."
 - **New mode: SELECTIVE EXPANSION.** Hold your current scope as the baseline, but see what else is possible. The agent surfaces expansion opportunities one by one with neutral recommendations — you cherry-pick the ones worth doing. Perfect for iterating on existing features where you want rigor but also want to be tempted by adjacent improvements.
-- **Your CEO review visions are saved, not lost.** Expansion ideas, cherry-pick decisions, and 10x visions are now persisted to `~/.gstack/projects/{repo}/ceo-plans/` as structured design documents. Stale plans get archived automatically. If a vision is exceptional, you can promote it to `docs/designs/` in your repo for the team.
+- **Your CEO review visions are saved, not lost.** Expansion ideas, cherry-pick decisions, and 10x visions are now persisted to `~/.aov-lab/projects/{repo}/ceo-plans/` as structured design documents. Stale plans get archived automatically. If a vision is exceptional, you can promote it to `docs/designs/` in your repo for the team.
 
-- **Smarter ship gates.** `/ship` no longer nags you about CEO and Design reviews when they're not relevant. Eng Review is the only required gate (and you can disable even that with `gstack-config set skip_eng_review true`). CEO Review is recommended for big product changes; Design Review for UI work. The dashboard still shows all three — it just won't block you for the optional ones.
+- **Smarter ship gates.** `/ship` no longer nags you about CEO and Design reviews when they're not relevant. Eng Review is the only required gate (and you can disable even that with `aov-lab-config set skip_eng_review true`). CEO Review is recommended for big product changes; Design Review for UI work. The dashboard still shows all three — it just won't block you for the optional ones.
 
 ### For contributors
 
@@ -283,13 +283,13 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 ## 0.5.1 — 2026-03-17
 - **Know where you stand before you ship.** Every `/plan-ceo-review`, `/plan-eng-review`, and `/plan-design-review` now logs its result to a review tracker. At the end of each review, you see a **Review Readiness Dashboard** showing which reviews are done, when they ran, and whether they're clean — with a clear CLEARED TO SHIP or NOT READY verdict.
 - **`/ship` checks your reviews before creating the PR.** Pre-flight now reads the dashboard and asks if you want to continue when reviews are missing. Informational only — it won't block you, but you'll know what you skipped.
-- **One less thing to copy-paste.** The SLUG computation (that opaque sed pipeline for computing `owner-repo` from git remote) is now a shared `bin/gstack-slug` helper. All 14 inline copies across templates replaced with `source <(gstack-slug)`. If the format ever changes, fix it once.
-- **Screenshots are now visible during QA and browse sessions.** When gstack takes screenshots, they now show up as clickable image elements in your output — no more invisible `/tmp/browse-screenshot.png` paths you can't see. Works in `/qa`, `/qa-only`, `/plan-design-review`, `/qa-design-review`, `/browse`, and `/gstack`.
+- **One less thing to copy-paste.** The SLUG computation (that opaque sed pipeline for computing `owner-repo` from git remote) is now a shared `bin/aov-lab-slug` helper. All 14 inline copies across templates replaced with `source <(aov-lab-slug)`. If the format ever changes, fix it once.
+- **Screenshots are now visible during QA and browse sessions.** When aov-lab takes screenshots, they now show up as clickable image elements in your output — no more invisible `/tmp/browse-screenshot.png` paths you can't see. Works in `/qa`, `/qa-only`, `/plan-design-review`, `/qa-design-review`, `/browse`, and `/aov-lab`.
 
 ### For contributors
 
 - Added `{{REVIEW_DASHBOARD}}` resolver to `gen-skill-docs.ts` — shared dashboard reader injected into 4 templates (3 review skills + ship).
-- Added `bin/gstack-slug` helper (5-line bash) with unit tests. Outputs `SLUG=` and `BRANCH=` lines, sanitizes `/` to `-`.
+- Added `bin/aov-lab-slug` helper (5-line bash) with unit tests. Outputs `SLUG=` and `BRANCH=` lines, sanitizes `/` to `-`.
 - New TODOs: smart review relevance detection (P3), `/merge` skill for review-gated PR merge (P2).
 
 ## 0.5.0 — 2026-03-16
@@ -304,7 +304,7 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 ### For contributors
 
 - Added `{{DESIGN_METHODOLOGY}}` resolver to `gen-skill-docs.ts` — shared design audit methodology injected into both `/plan-design-review` and `/qa-design-review` templates, following the `{{QA_METHODOLOGY}}` pattern.
-- Added `~/.gstack-dev/plans/` as a local plans directory for long-range vision docs (not checked in). CLAUDE.md and TODOS.md updated.
+- Added `~/.aov-lab-dev/plans/` as a local plans directory for long-range vision docs (not checked in). CLAUDE.md and TODOS.md updated.
 - Added `/setup-design-md` to TODOS.md (P2) for interactive DESIGN.md creation from scratch.
 
 ## 0.4.5 — 2026-03-16
@@ -315,8 +315,8 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 ### Fixed
 
 - **`$B js "const x = await fetch(...); return x.status"` now works.** The `js` command used to wrap everything as an expression — so `const`, semicolons, and multi-line code all broke. It now detects statements and uses a block wrapper, just like `eval` already did.
-- **Clicking a dropdown option no longer hangs forever.** If an agent sees `@e3 [option] "Admin"` in a snapshot and runs `click @e3`, gstack now auto-selects that option instead of hanging on an impossible Playwright click. The right thing just happens.
-- **When click is the wrong tool, gstack tells you.** Clicking an `<option>` via CSS selector used to time out with a cryptic Playwright error. Now you get: `"Use 'browse select' instead of 'click' for dropdown options."`
+- **Clicking a dropdown option no longer hangs forever.** If an agent sees `@e3 [option] "Admin"` in a snapshot and runs `click @e3`, aov-lab now auto-selects that option instead of hanging on an impossible Playwright click. The right thing just happens.
+- **When click is the wrong tool, aov-lab tells you.** Clicking an `<option>` via CSS selector used to time out with a cryptic Playwright error. Now you get: `"Use 'browse select' instead of 'click' for dropdown options."`
 
 ### For contributors
 
@@ -331,19 +331,19 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 ## 0.4.4 — 2026-03-16
 
 - **New releases detected in under an hour, not half a day.** The update check cache was set to 12 hours, which meant you could be stuck on an old version all day while new releases dropped. Now "you're up to date" expires after 60 minutes, so you'll see upgrades within the hour. "Upgrade available" still nags for 12 hours (that's the point).
-- **`/gstack-upgrade` always checks for real.** Running `/gstack-upgrade` directly now bypasses the cache and does a fresh check against GitHub. No more "you're already on the latest" when you're not.
+- **`/aov-lab-upgrade` always checks for real.** Running `/aov-lab-upgrade` directly now bypasses the cache and does a fresh check against GitHub. No more "you're already on the latest" when you're not.
 
 ### For contributors
 
 - Split `last-update-check` cache TTL: 60 min for `UP_TO_DATE`, 720 min for `UPGRADE_AVAILABLE`.
-- Added `--force` flag to `bin/gstack-update-check` (deletes cache file before checking).
+- Added `--force` flag to `bin/aov-lab-update-check` (deletes cache file before checking).
 - 3 new tests: `--force` busts UP_TO_DATE cache, `--force` busts UPGRADE_AVAILABLE cache, 60-min TTL boundary test with `utimesSync`.
 
 ## 0.4.3 — 2026-03-16
 
 - **New `/document-release` skill.** Run it after `/ship` but before merging — it reads every doc file in your project, cross-references the diff, and updates README, ARCHITECTURE, CONTRIBUTING, CHANGELOG, and TODOS to match what you actually shipped. Risky changes get surfaced as questions; everything else is automatic.
-- **Every question is now crystal clear, every time.** You used to need 3+ sessions running before gstack would give you full context and plain English explanations. Now every question — even in a single session — tells you the project, branch, and what's happening, explained simply enough to understand mid-context-switch. No more "sorry, explain it to me more simply."
-- **Branch name is always correct.** gstack now detects your current branch at runtime instead of relying on the snapshot from when the conversation started. Switch branches mid-session? gstack keeps up.
+- **Every question is now crystal clear, every time.** You used to need 3+ sessions running before aov-lab would give you full context and plain English explanations. Now every question — even in a single session — tells you the project, branch, and what's happening, explained simply enough to understand mid-context-switch. No more "sorry, explain it to me more simply."
+- **Branch name is always correct.** aov-lab now detects your current branch at runtime instead of relying on the snapshot from when the conversation started. Switch branches mid-session? aov-lab keeps up.
 
 ### For contributors
 
@@ -354,7 +354,7 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 ## 0.4.2 — 2026-03-16
 
 - **`$B js "await fetch(...)"` now just works.** Any `await` expression in `$B js` or `$B eval` is automatically wrapped in an async context. No more `SyntaxError: await is only valid in async functions`. Single-line eval files return values directly; multi-line files use explicit `return`.
-- **Contributor mode now reflects, not just reacts.** Instead of only filing reports when something breaks, contributor mode now prompts periodic reflection: "Rate your gstack experience 0-10. Not a 10? Think about why." Catches quality-of-life issues and friction that passive detection misses. Reports now include a 0-10 rating and "What would make this a 10" to focus on actionable improvements.
+- **Contributor mode now reflects, not just reacts.** Instead of only filing reports when something breaks, contributor mode now prompts periodic reflection: "Rate your aov-lab experience 0-10. Not a 10? Think about why." Catches quality-of-life issues and friction that passive detection misses. Reports now include a 0-10 rating and "What would make this a 10" to focus on actionable improvements.
 - **Skills now respect your branch target.** `/ship`, `/review`, `/qa`, and `/plan-ceo-review` detect which branch your PR actually targets instead of assuming `main`. Stacked branches, Conductor workspaces targeting feature branches, and repos using `master` all just work now.
 - **`/retro` works on any default branch.** Repos using `master`, `develop`, or other default branch names are detected automatically — no more empty retros because the branch name was wrong.
 - **New `{{BASE_BRANCH_DETECT}}` placeholder** for skill authors — drop it into any template and get 3-step branch detection (PR base → repo default → fallback) for free.
@@ -369,13 +369,13 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 - Added "Writing SKILL templates" section to CLAUDE.md — rules for natural language over bash-isms, dynamic branch detection, self-contained code blocks.
 - Hardcoded-main regression test scans all `.tmpl` files for git commands with hardcoded `main`.
 - QA template cleaned up: removed `REPORT_DIR` shell variable, simplified port detection to prose.
-- gstack-upgrade template: explicit cross-step prose for variable references between bash blocks.
+- aov-lab-upgrade template: explicit cross-step prose for variable references between bash blocks.
 
 ## 0.4.1 — 2026-03-16
 
-- **gstack now notices when it screws up.** Turn on contributor mode (`gstack-config set gstack_contributor true`) and gstack automatically writes up what went wrong — what you were doing, what broke, repro steps. Next time something annoys you, the bug report is already written. Fork gstack and fix it yourself.
-- **Juggling multiple sessions? gstack keeps up.** When you have 3+ gstack windows open, every question now tells you which project, which branch, and what you were working on. No more staring at a question thinking "wait, which window is this?"
-- **Every question now comes with a recommendation.** Instead of dumping options on you and making you think, gstack tells you what it would pick and why. Same clear format across every skill.
+- **aov-lab now notices when it screws up.** Turn on contributor mode (`aov-lab-config set aov_lab_contributor true`) and aov-lab automatically writes up what went wrong — what you were doing, what broke, repro steps. Next time something annoys you, the bug report is already written. Fork aov-lab and fix it yourself.
+- **Juggling multiple sessions? aov-lab keeps up.** When you have 3+ aov-lab windows open, every question now tells you which project, which branch, and what you were working on. No more staring at a question thinking "wait, which window is this?"
+- **Every question now comes with a recommendation.** Instead of dumping options on you and making you think, aov-lab tells you what it would pick and why. Same clear format across every skill.
 - **/review now catches forgotten enum handlers.** Add a new status, tier, or type constant? /review traces it through every switch statement, allowlist, and filter in your codebase — not just the files you changed. Catches the "added the value but forgot to handle it" class of bugs before they ship.
 
 ### For contributors
@@ -412,15 +412,15 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 ## 0.3.9 — 2026-03-15
 
 ### Added
-- **`bin/gstack-config` CLI** — simple get/set/list interface for `~/.gstack/config.yaml`. Used by update-check and upgrade skill for persistent settings (auto_upgrade, update_check).
+- **`bin/aov-lab-config` CLI** — simple get/set/list interface for `~/.aov-lab/config.yaml`. Used by update-check and upgrade skill for persistent settings (auto_upgrade, update_check).
 - **Smart update check** — 12h cache TTL (was 24h), exponential snooze backoff (24h → 48h → 1 week) when user declines upgrades, `update_check: false` config option to disable checks entirely. Snooze resets when a new version is released.
 - **Auto-upgrade mode** — set `auto_upgrade: true` in config or `GSTACK_AUTO_UPGRADE=1` env var to skip the upgrade prompt and update automatically.
 - **4-option upgrade prompt** — "Yes, upgrade now", "Always keep me up to date", "Not now" (snooze), "Never ask again" (disable).
-- **Vendored copy sync** — `/gstack-upgrade` now detects and updates local vendored copies in the current project after upgrading the primary install.
-- 25 new tests: 11 for gstack-config CLI, 14 for snooze/config paths in update-check.
+- **Vendored copy sync** — `/aov-lab-upgrade` now detects and updates local vendored copies in the current project after upgrading the primary install.
+- 25 new tests: 11 for aov-lab-config CLI, 14 for snooze/config paths in update-check.
 
 ### Changed
-- README upgrade/troubleshooting sections simplified to reference `/gstack-upgrade` instead of long paste commands.
+- README upgrade/troubleshooting sections simplified to reference `/aov-lab-upgrade` instead of long paste commands.
 - Upgrade skill template bumped to v1.1.0 with `Write` tool permission for config editing.
 - All SKILL.md preambles updated with new upgrade flow description.
 
@@ -438,7 +438,7 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 - Static validation tests for `TODOS-format.md` references across skills.
 
 ### Fixed
-- **`.gitignore` append failures silently swallowed** — `ensureStateDir()` bare `catch {}` replaced with ENOENT-only silence; non-ENOENT errors (EACCES, ENOSPC) logged to `.gstack/browse-server.log`.
+- **`.gitignore` append failures silently swallowed** — `ensureStateDir()` bare `catch {}` replaced with ENOENT-only silence; non-ENOENT errors (EACCES, ENOSPC) logged to `.aov-lab/browse-server.log`.
 
 ### Changed
 - `TODO.md` deleted — all items merged into `TODOS.md`.
@@ -455,14 +455,14 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 ## 0.3.6 — 2026-03-14
 
 ### Added
-- **E2E observability** — heartbeat file (`~/.gstack-dev/e2e-live.json`), per-run log directory (`~/.gstack-dev/e2e-runs/{runId}/`), progress.log, per-test NDJSON transcripts, persistent failure transcripts. All I/O non-fatal.
+- **E2E observability** — heartbeat file (`~/.aov-lab-dev/e2e-live.json`), per-run log directory (`~/.aov-lab-dev/e2e-runs/{runId}/`), progress.log, per-test NDJSON transcripts, persistent failure transcripts. All I/O non-fatal.
 - **`bun run eval:watch`** — live terminal dashboard reads heartbeat + partial eval file every 1s. Shows completed tests, current test with turn/tool info, stale detection (>10min), `--tail` for progress.log.
 - **Incremental eval saves** — `savePartial()` writes `_partial-e2e.json` after each test completes. Crash-resilient: partial results survive killed runs. Never cleaned up.
 - **Machine-readable diagnostics** — `exit_reason`, `timeout_at_turn`, `last_tool_call` fields in eval JSON. Enables `jq` queries for automated fix loops.
 - **API connectivity pre-check** — E2E suite throws immediately on ConnectionRefused before burning test budget.
 - **`is_error` detection** — `claude -p` can return `subtype: "success"` with `is_error: true` on API failures. Now correctly classified as `error_api`.
 - **Stream-json NDJSON parser** — `parseNDJSON()` pure function for real-time E2E progress from `claude -p --output-format stream-json --verbose`.
-- **Eval persistence** — results saved to `~/.gstack-dev/evals/` with auto-comparison against previous run.
+- **Eval persistence** — results saved to `~/.aov-lab-dev/evals/` with auto-comparison against previous run.
 - **Eval CLI tools** — `eval:list`, `eval:compare`, `eval:summary` for inspecting eval history.
 - **All 9 skills converted to `.tmpl` templates** — plan-ceo-review, plan-eng-review, retro, review, ship now use `{{UPDATE_CHECK}}` placeholder. Single source of truth for update check preamble.
 - **3-tier eval suite** — Tier 1: static validation (free), Tier 2: E2E via `claude -p` (~$3.85/run), Tier 3: LLM-as-judge (~$0.15/run). Gated by `EVALS=1`.
@@ -518,12 +518,12 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 ### Fixed
 - Cookie import picker now returns JSON instead of HTML — `jsonResponse()` referenced `url` out of scope, crashing every API call
 - `help` command routed correctly (was unreachable due to META_COMMANDS dispatch ordering)
-- Stale servers from global install no longer shadow local changes — removed legacy `~/.claude/skills/gstack` fallback from `resolveServerScript()`
-- Crash log path references updated from `/tmp/` to `.gstack/`
+- Stale servers from global install no longer shadow local changes — removed legacy `~/.claude/skills/aov-lab` fallback from `resolveServerScript()`
+- Crash log path references updated from `/tmp/` to `.aov-lab/`
 
 ### Added
 - **Diff-aware QA mode** — `/qa` on a feature branch auto-analyzes `git diff`, identifies affected pages/routes, detects the running app on localhost, and tests only what changed. No URL needed.
-- **Project-local browse state** — state file, logs, and all server state now live in `.gstack/` inside the project root (detected via `git rev-parse --show-toplevel`). No more `/tmp` state files.
+- **Project-local browse state** — state file, logs, and all server state now live in `.aov-lab/` inside the project root (detected via `git rev-parse --show-toplevel`). No more `/tmp` state files.
 - **Shared config module** (`browse/src/config.ts`) — centralizes path resolution for CLI and server, eliminates duplicated port/state logic
 - **Random port selection** — server picks a random port 10000-60000 instead of scanning 9400-9409. No more CONDUCTOR_PORT magic offset. No more port collisions across workspaces.
 - **Binary version tracking** — state file includes `binaryVersion` SHA; CLI auto-restarts the server when the binary is rebuilt
@@ -540,8 +540,8 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 - CONTRIBUTING.md with quick start, dev mode explanation, and instructions for testing branches in other repos
 
 ### Changed
-- State file location: `.gstack/browse.json` (was `/tmp/browse-server.json`)
-- Log files location: `.gstack/browse-{console,network,dialog}.log` (was `/tmp/browse-*.log`)
+- State file location: `.aov-lab/browse.json` (was `/tmp/browse-server.json`)
+- Log files location: `.aov-lab/browse-{console,network,dialog}.log` (was `/tmp/browse-*.log`)
 - Atomic state file writes: `.json.tmp` → rename (prevents partial reads)
 - CLI passes `BROWSE_STATE_FILE` to spawned server (server derives all paths from it)
 - SKILL.md setup checks parse META signals and handle `META:UPDATE_AVAILABLE`
@@ -553,7 +553,7 @@ Read the philosophy: https://garryslist.org/posts/boil-the-ocean
 ### Removed
 - `CONDUCTOR_PORT` magic offset (`browse_port = CONDUCTOR_PORT - 45600`)
 - Port scan range 9400-9409
-- Legacy fallback to `~/.claude/skills/gstack/browse/src/server.ts`
+- Legacy fallback to `~/.claude/skills/aov-lab/browse/src/server.ts`
 - `DEVELOPING_GSTACK.md` (renamed to CONTRIBUTING.md)
 
 ## 0.3.1 — 2026-03-12

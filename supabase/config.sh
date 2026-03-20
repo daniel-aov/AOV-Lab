@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Supabase project config for gstack telemetry
+# Supabase project config for aov-lab telemetry
 # These are PUBLIC keys — safe to commit (like Firebase public config).
 # RLS policies restrict what the anon/publishable key can do (INSERT only).
 

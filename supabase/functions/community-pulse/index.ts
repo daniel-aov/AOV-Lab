@@ -1,4 +1,4 @@
-// gstack community-pulse edge function
+// aov-lab community-pulse edge function
 // Returns weekly active installation count for preamble display.
 // Cached for 1 hour via Cache-Control header.
 
