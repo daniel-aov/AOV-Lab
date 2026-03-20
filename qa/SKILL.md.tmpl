@@ -29,6 +29,39 @@ allowed-tools:
 
 You are a QA engineer AND a bug-fix engineer. Test web applications like a real user — click everything, fill every form, check every state. When you find bugs, fix them in source code with atomic commits, then re-verify. Produce a structured report with before/after evidence.
 
+## Shopify App QA Patterns
+
+When testing a Shopify app, detect the app type and apply the right test patterns:
+
+**Detect app type from URL:**
+- `*.myshopify.com/admin/apps/*` → Embedded app (Admin)
+- `*.myshopify.com` (storefront) → Theme App Extension / Storefront widget
+- `localhost:*` → Development server
+
+**Embedded App testing (Admin):**
+- App loads inside Shopify Admin iframe → test App Bridge integration
+- Navigation: does the app respect Shopify Admin navigation (back button, breadcrumbs)?
+- Loading states: does the app show a Polaris Spinner or SkeletonPage while loading?
+- Session: does the app work after 30+ minutes idle? (session token expiry)
+- Billing: test install → free trial → upgrade → downgrade → uninstall flow
+- Error states: what happens when Shopify API returns 429 (rate limit)?
+
+**Storefront Widget testing (Theme Extension):**
+- Test on at least 3 themes: Dawn (free), 1 popular paid theme, 1 minimal theme
+- Mobile responsive: test at 375px width, verify touch targets 44px+
+- Performance: widget should not add >100ms to page load
+- No layout shift: widget renders in correct position without jumping
+- Dark mode: if theme supports dark mode, does widget adapt?
+- Product page: test with 1 variant, 5 variants, 50+ variants
+- Collection page: test with 10 products, 50 products (performance)
+- Out-of-stock: test with all variants out of stock
+
+**Checkout Extension testing:**
+- Test full checkout flow: add to cart → checkout → payment → confirmation
+- Verify extension appears at correct checkout step
+- Test with discount codes applied
+- Test with multiple items in cart
+
 ## Setup
 
 **Parse the user's request for these parameters:**

@@ -59,11 +59,11 @@ If output shows `UPGRADE_AVAILABLE <old> <new>`: read `~/.claude/skills/aov-lab/
 
 If `LAKE_INTRO` is `no`: Before continuing, introduce the Completeness Principle.
 Tell the user: "aov-lab follows the **Boil the Lake** principle — always do the complete
-thing when AI makes the marginal cost near-zero. Read more: https://garryslist.org/posts/boil-the-ocean"
-Then offer to open the essay in their default browser:
+thing when AI makes the marginal cost near-zero."
+Then mark as seen:
 
 ```bash
-open https://garryslist.org/posts/boil-the-ocean
+echo "Completeness Principle: always do the complete thing when AI makes the marginal cost near-zero."
 touch ~/.aov-lab/.completeness-intro-seen
 ```
 
@@ -226,6 +226,98 @@ You are a **senior ecommerce analyst and Shopify ecosystem expert**. Your job is
 
 ---
 
+## StoreLead API Integration
+
+StoreLead (storeleads.app) cung cấp data chính xác về Shopify apps và stores — install counts,
+reviews, pricing, technologies, estimated revenue. **Tốt hơn nhiều so với web search cho số liệu.**
+
+### Setup check (chạy đầu mỗi session)
+
+```bash
+_SL_KEY=$(~/.claude/skills/aov-lab/bin/aov-lab-config get storeleads_api_key 2>/dev/null || true)
+echo "STORELEADS: ${_SL_KEY:+configured}"
+```
+
+Nếu `STORELEADS` trống: hỏi user qua AskUserQuestion:
+
+> StoreLead API cho phép lấy data chính xác về Shopify apps: số installs thật, reviews,
+> pricing, stores đang dùng app nào. Data tốt hơn nhiều so với Google search.
+>
+> Bạn có StoreLead API key không? (Đăng ký tại storeleads.app/api)
+>
+> A) Có — tôi sẽ nhập key
+> B) Không — dùng web search thay thế
+
+Nếu A: hỏi key, rồi lưu:
+```bash
+~/.claude/skills/aov-lab/bin/aov-lab-config set storeleads_api_key "USER_KEY"
+```
+
+Nếu B: tiếp tục bình thường, dùng WebSearch. Không hỏi lại trong session.
+
+### Cách dùng StoreLead API
+
+**Base URL:** `https://storeleads.app/json/api/v1/all`
+**Auth:** Header `Authorization: Bearer {api_key}`
+
+Khi có API key, **ưu tiên StoreLead trước WebSearch** cho các data sau:
+
+#### 1. Tìm thông tin app đối thủ
+```bash
+# Tìm app theo tên
+curl -s -H "Authorization: Bearer $SL_KEY" \
+  "https://storeleads.app/json/api/v1/all/app?q=color+swatch&platform=shopify&limit=20"
+```
+→ Trả về: install count thật, rating, review count, pricing, categories, 30/90-day trends
+
+#### 2. Xem chi tiết 1 app cụ thể
+```bash
+# Token = phần cuối URL app store (VD: variant-swatch-king)
+curl -s -H "Authorization: Bearer $SL_KEY" \
+  "https://storeleads.app/json/api/v1/all/app/shopify.variant-swatch-king"
+```
+→ Trả về: full details + install trends + pricing plans + integrations
+
+#### 3. Đọc reviews của app
+```bash
+curl -s -H "Authorization: Bearer $SL_KEY" \
+  "https://storeleads.app/json/api/v1/all/app/shopify.variant-swatch-king/reviews?limit=50&sort=rating_asc"
+```
+→ Sort `rating_asc` = xem 1-star reviews trước (pain points tốt nhất)
+
+#### 4. Tìm stores đang dùng app cụ thể
+```bash
+curl -s -H "Authorization: Bearer $SL_KEY" \
+  "https://storeleads.app/json/api/v1/all/domain?app=shopify.variant-swatch-king&limit=20"
+```
+→ Trả về: stores đang dùng app, estimated revenue, location, other apps installed
+
+#### 5. Xem store dùng những app gì
+```bash
+curl -s -H "Authorization: Bearer $SL_KEY" \
+  "https://storeleads.app/json/api/v1/all/domain/example-store.myshopify.com"
+```
+→ Trả về: tất cả apps installed, technologies, estimated metrics
+
+### Data priority
+
+Khi cả StoreLead API và WebSearch đều có thể dùng:
+
+| Data cần | Dùng StoreLead | Dùng WebSearch |
+|----------|---------------|----------------|
+| App install count | ✅ (chính xác) | ❌ (ước tính) |
+| App reviews + rating | ✅ (full data) | ⚠️ (snippet) |
+| App pricing tiers | ✅ | ✅ |
+| Competitor list | ✅ (search + filter) | ✅ (broader) |
+| Merchant pain points | ⚠️ (reviews only) | ✅ (forums, reddit) |
+| Market trends | ❌ | ✅ (articles, reports) |
+| Shopify API changes | ❌ | ✅ (changelogs, docs) |
+| Store-level data | ✅ (apps, revenue) | ❌ |
+
+**Best combo:** StoreLead cho số liệu cứng (installs, reviews, pricing) + WebSearch cho context mềm (trends, pain points, community signals).
+
+---
+
 ## Phase 0: Context & Mode Selection
 
 ```bash
@@ -263,6 +355,40 @@ source <(~/.claude/skills/aov-lab/bin/aov-lab-slug 2>/dev/null)
 ## Phase 1: Landscape Scan (Exploration mode)
 
 The "casting a wide net" phase. For the user's thesis `T`, search from **Six Angles**.
+
+### StoreLead Data Pull (nếu có API key)
+
+Trước khi chạy Six Angles, nếu StoreLead API key đã configured, pull data cứng trước:
+
+```bash
+SL_KEY=$(~/.claude/skills/aov-lab/bin/aov-lab-config get storeleads_api_key 2>/dev/null || true)
+```
+
+Nếu `SL_KEY` có giá trị, chạy:
+
+1. **Search apps liên quan:**
+   ```bash
+   curl -s -H "Authorization: Bearer $SL_KEY" \
+     "https://storeleads.app/json/api/v1/all/app?q={T}&platform=shopify&limit=30&sort=installs_desc"
+   ```
+   → Parse JSON: lấy top 15 apps theo installs, ghi lại name, installs, rating, review_count, pricing
+
+2. **Top 5 apps — đọc reviews 1-star:**
+   Cho mỗi app trong top 5:
+   ```bash
+   curl -s -H "Authorization: Bearer $SL_KEY" \
+     "https://storeleads.app/json/api/v1/all/app/shopify.{app_token}/reviews?limit=30&sort=rating_asc"
+   ```
+   → Pain points thật từ merchants
+
+3. **Xem stores đang dùng top app — họ dùng app gì khác?**
+   ```bash
+   curl -s -H "Authorization: Bearer $SL_KEY" \
+     "https://storeleads.app/json/api/v1/all/domain?app=shopify.{top_app_token}&limit=10"
+   ```
+   → Biết merchants thường dùng combo apps nào → cross-sell insight
+
+Kết quả StoreLead là **source of truth cho số liệu** — dùng WebSearch bổ sung cho trends và community signals.
 
 ### The Six Angles
 

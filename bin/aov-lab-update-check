@@ -7,18 +7,18 @@
 #   (nothing)                       — up to date, snoozed, disabled, or check skipped
 #
 # Env overrides (for testing):
-#   GSTACK_DIR          — override auto-detected aov-lab root
-#   GSTACK_REMOTE_URL   — override remote VERSION URL
-#   GSTACK_STATE_DIR    — override ~/.aov-lab state directory
+#   AOV_DIR          — override auto-detected aov-lab root
+#   AOV_REMOTE_URL   — override remote VERSION URL
+#   AOV_STATE_DIR    — override ~/.aov-lab state directory
 set -euo pipefail
 
-GSTACK_DIR="${GSTACK_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
-STATE_DIR="${GSTACK_STATE_DIR:-$HOME/.aov-lab}"
+AOV_DIR="${AOV_DIR:-$(cd "$(dirname "$0")/.." && pwd)}"
+STATE_DIR="${AOV_STATE_DIR:-$HOME/.aov-lab}"
 CACHE_FILE="$STATE_DIR/last-update-check"
 MARKER_FILE="$STATE_DIR/just-upgraded-from"
 SNOOZE_FILE="$STATE_DIR/update-snoozed"
-VERSION_FILE="$GSTACK_DIR/VERSION"
-REMOTE_URL="${GSTACK_REMOTE_URL:-https://raw.githubusercontent.com/garrytan/aov-lab/main/VERSION}"
+VERSION_FILE="$AOV_DIR/VERSION"
+REMOTE_URL="${AOV_REMOTE_URL:-https://github.com/daniel-aov/AOV-Lab/-/raw/main/VERSION}"
 
 # ─── Force flag (busts cache for standalone /aov-lab-upgrade) ──
 if [ "${1:-}" = "--force" ]; then
@@ -26,7 +26,7 @@ if [ "${1:-}" = "--force" ]; then
 fi
 
 # ─── Step 0: Check if updates are disabled ────────────────────
-_UC=$("$GSTACK_DIR/bin/aov-lab-config" get update_check 2>/dev/null || true)
+_UC=$("$AOV_DIR/bin/aov-lab-config" get update_check 2>/dev/null || true)
 if [ "$_UC" = "false" ]; then
   exit 0
 fi
@@ -144,13 +144,13 @@ mkdir -p "$STATE_DIR"
 # This logs an update check event for community health metrics.
 # If the endpoint isn't configured or Supabase is down, this is a no-op.
 # Source Supabase config for install ping
-if [ -z "${GSTACK_TELEMETRY_ENDPOINT:-}" ] && [ -f "$GSTACK_DIR/supabase/config.sh" ]; then
-  . "$GSTACK_DIR/supabase/config.sh"
+if [ -z "${AOV_TELEMETRY_ENDPOINT:-}" ] && [ -f "$AOV_DIR/supabase/config.sh" ]; then
+  . "$AOV_DIR/supabase/config.sh"
 fi
-_SUPA_ENDPOINT="${GSTACK_TELEMETRY_ENDPOINT:-}"
-_SUPA_KEY="${GSTACK_SUPABASE_ANON_KEY:-}"
+_SUPA_ENDPOINT="${AOV_TELEMETRY_ENDPOINT:-}"
+_SUPA_KEY="${AOV_SUPABASE_ANON_KEY:-}"
 # Respect telemetry opt-out — don't ping Supabase if user set telemetry: off
-_TEL_TIER="$("$GSTACK_DIR/bin/aov-lab-config" get telemetry 2>/dev/null || true)"
+_TEL_TIER="$("$AOV_DIR/bin/aov-lab-config" get telemetry 2>/dev/null || true)"
 if [ -n "$_SUPA_ENDPOINT" ] && [ -n "$_SUPA_KEY" ] && [ "${_TEL_TIER:-off}" != "off" ]; then
   _OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
   curl -sf --max-time 5 \
@@ -187,7 +187,7 @@ if check_snooze "$REMOTE"; then
 fi
 
 # Log upgrade_prompted event (only on slow-path fetch, not cached replays)
-TEL_CMD="$GSTACK_DIR/bin/aov-lab-telemetry-log"
+TEL_CMD="$AOV_DIR/bin/aov-lab-telemetry-log"
 if [ -x "$TEL_CMD" ]; then
   "$TEL_CMD" --event-type upgrade_prompted --skill "" --duration 0 \
     --outcome success --session-id "update-$$-$(date +%s)" 2>/dev/null &

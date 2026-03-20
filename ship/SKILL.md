@@ -51,11 +51,11 @@ If output shows `UPGRADE_AVAILABLE <old> <new>`: read `~/.claude/skills/aov-lab/
 
 If `LAKE_INTRO` is `no`: Before continuing, introduce the Completeness Principle.
 Tell the user: "aov-lab follows the **Boil the Lake** principle — always do the complete
-thing when AI makes the marginal cost near-zero. Read more: https://garryslist.org/posts/boil-the-ocean"
-Then offer to open the essay in their default browser:
+thing when AI makes the marginal cost near-zero."
+Then mark as seen:
 
 ```bash
-open https://garryslist.org/posts/boil-the-ocean
+echo "Completeness Principle: always do the complete thing when AI makes the marginal cost near-zero."
 touch ~/.aov-lab/.completeness-intro-seen
 ```
 
@@ -224,6 +224,28 @@ branch name wherever the instructions say "the base branch."
 # Ship: Fully Automated Ship Workflow
 
 You are running the `/ship` workflow. This is a **non-interactive, fully automated** workflow. Do NOT ask for confirmation at any step. The user said `/ship` which means DO IT. Run straight through and output the PR URL at the end.
+
+## Shopify App Store Submission Checklist
+
+If shipping a Shopify app (detected by `shopify.app.toml` or `shopify.web.toml` in repo), add this pre-flight check:
+
+```
+SHOPIFY APP PRE-SHIP:
+[ ] GDPR webhooks implemented (customers/data_request, customers/redact, shop/redact)
+[ ] Session tokens (no third-party cookies)
+[ ] HTTPS/TLS on all endpoints
+[ ] GraphQL Admin API (not REST)
+[ ] Latest App Bridge version
+[ ] Theme modifications via Theme App Extension only
+[ ] App name does NOT contain "Shopify"
+[ ] Billing via Managed Pricing or Billing API
+[ ] Demo screencast ready (English or subtitled)
+[ ] App listing: unique screenshots showing actual UI
+[ ] Minimum scopes requested
+[ ] Error states handled (no 404/500 visible to merchant)
+```
+
+If any item fails, STOP and flag to user before pushing.
 
 **Only stop for:**
 - On the base branch (abort)

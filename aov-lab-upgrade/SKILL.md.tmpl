@@ -25,7 +25,7 @@ This section is referenced by all skill preambles when they detect `UPGRADE_AVAI
 First, check if auto-upgrade is enabled:
 ```bash
 _AUTO=""
-[ "${GSTACK_AUTO_UPGRADE:-}" = "1" ] && _AUTO="true"
+[ "${AOV_AUTO_UPGRADE:-}" = "1" ] && _AUTO="true"
 [ -z "$_AUTO" ] && _AUTO=$(~/.claude/skills/aov-lab/bin/aov-lab-config get auto_upgrade 2>/dev/null || true)
 echo "AUTO_UPGRADE=$_AUTO"
 ```
@@ -121,7 +121,7 @@ If `$STASH_OUTPUT` contains "Saved working directory", warn the user: "Note: loc
 ```bash
 PARENT=$(dirname "$INSTALL_DIR")
 TMP_DIR=$(mktemp -d)
-git clone --depth 1 https://gitlab.com/aov.ai/aov-lab.git "$TMP_DIR/aov-lab"
+git clone --depth 1 https://github.com/daniel-aov/AOV-Lab.git "$TMP_DIR/aov-lab"
 mv "$INSTALL_DIR" "$INSTALL_DIR.bak"
 mv "$TMP_DIR/aov-lab" "$INSTALL_DIR"
 cd "$INSTALL_DIR" && ./setup
@@ -134,33 +134,33 @@ Use the install directory from Step 2. Check if there's also a local vendored co
 
 ```bash
 _ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
-LOCAL_GSTACK=""
+LOCAL_AOV=""
 if [ -n "$_ROOT" ] && [ -d "$_ROOT/.claude/skills/aov-lab" ]; then
   _RESOLVED_LOCAL=$(cd "$_ROOT/.claude/skills/aov-lab" && pwd -P)
   _RESOLVED_PRIMARY=$(cd "$INSTALL_DIR" && pwd -P)
   if [ "$_RESOLVED_LOCAL" != "$_RESOLVED_PRIMARY" ]; then
-    LOCAL_GSTACK="$_ROOT/.claude/skills/aov-lab"
+    LOCAL_AOV="$_ROOT/.claude/skills/aov-lab"
   fi
 fi
-echo "LOCAL_GSTACK=$LOCAL_GSTACK"
+echo "LOCAL_AOV=$LOCAL_AOV"
 ```
 
-If `LOCAL_GSTACK` is non-empty, update it by copying from the freshly-upgraded primary install (same approach as README vendored install):
+If `LOCAL_AOV` is non-empty, update it by copying from the freshly-upgraded primary install (same approach as README vendored install):
 ```bash
-mv "$LOCAL_GSTACK" "$LOCAL_GSTACK.bak"
-cp -Rf "$INSTALL_DIR" "$LOCAL_GSTACK"
-rm -rf "$LOCAL_GSTACK/.git"
-cd "$LOCAL_GSTACK" && ./setup
-rm -rf "$LOCAL_GSTACK.bak"
+mv "$LOCAL_AOV" "$LOCAL_AOV.bak"
+cp -Rf "$INSTALL_DIR" "$LOCAL_AOV"
+rm -rf "$LOCAL_AOV/.git"
+cd "$LOCAL_AOV" && ./setup
+rm -rf "$LOCAL_AOV.bak"
 ```
-Tell user: "Also updated vendored copy at `$LOCAL_GSTACK` — commit `.claude/skills/aov-lab/` when you're ready."
+Tell user: "Also updated vendored copy at `$LOCAL_AOV` — commit `.claude/skills/aov-lab/` when you're ready."
 
 If `./setup` fails, restore from backup and warn the user:
 ```bash
-rm -rf "$LOCAL_GSTACK"
-mv "$LOCAL_GSTACK.bak" "$LOCAL_GSTACK"
+rm -rf "$LOCAL_AOV"
+mv "$LOCAL_AOV.bak" "$LOCAL_AOV"
 ```
-Tell user: "Sync failed — restored previous version at `$LOCAL_GSTACK`. Run `/aov-lab-upgrade` manually to retry."
+Tell user: "Sync failed — restored previous version at `$LOCAL_AOV`. Run `/aov-lab-upgrade` manually to retry."
 
 ### Step 5: Write marker + clear cache
 
@@ -208,14 +208,14 @@ Use the output to determine if an upgrade is available.
 
 3. If no output (primary is up to date): check for a stale local vendored copy.
 
-Run the Step 2 bash block above to detect the primary install type and directory (`INSTALL_TYPE` and `INSTALL_DIR`). Then run the Step 4.5 detection bash block above to check for a local vendored copy (`LOCAL_GSTACK`).
+Run the Step 2 bash block above to detect the primary install type and directory (`INSTALL_TYPE` and `INSTALL_DIR`). Then run the Step 4.5 detection bash block above to check for a local vendored copy (`LOCAL_AOV`).
 
-**If `LOCAL_GSTACK` is empty** (no local vendored copy): tell the user "You're already on the latest version (v{version})."
+**If `LOCAL_AOV` is empty** (no local vendored copy): tell the user "You're already on the latest version (v{version})."
 
-**If `LOCAL_GSTACK` is non-empty**, compare versions:
+**If `LOCAL_AOV` is non-empty**, compare versions:
 ```bash
 PRIMARY_VER=$(cat "$INSTALL_DIR/VERSION" 2>/dev/null || echo "unknown")
-LOCAL_VER=$(cat "$LOCAL_GSTACK/VERSION" 2>/dev/null || echo "unknown")
+LOCAL_VER=$(cat "$LOCAL_AOV/VERSION" 2>/dev/null || echo "unknown")
 echo "PRIMARY=$PRIMARY_VER LOCAL=$LOCAL_VER"
 ```
 

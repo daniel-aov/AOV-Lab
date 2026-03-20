@@ -54,11 +54,11 @@ If output shows `UPGRADE_AVAILABLE <old> <new>`: read `~/.claude/skills/aov-lab/
 
 If `LAKE_INTRO` is `no`: Before continuing, introduce the Completeness Principle.
 Tell the user: "aov-lab follows the **Boil the Lake** principle — always do the complete
-thing when AI makes the marginal cost near-zero. Read more: https://garryslist.org/posts/boil-the-ocean"
-Then offer to open the essay in their default browser:
+thing when AI makes the marginal cost near-zero."
+Then mark as seen:
 
 ```bash
-open https://garryslist.org/posts/boil-the-ocean
+echo "Completeness Principle: always do the complete thing when AI makes the marginal cost near-zero."
 touch ~/.aov-lab/.completeness-intro-seen
 ```
 
@@ -236,6 +236,26 @@ But your posture depends on what the user needs:
 * COMPLETENESS IS CHEAP: AI coding compresses implementation time 10-100x. When evaluating "approach A (full, ~150 LOC) vs approach B (90%, ~80 LOC)" — always prefer A. The 70-line delta costs seconds with CC. "Ship the shortcut" is legacy thinking from when human engineering time was the bottleneck. Boil the lake.
 Critical rule: In ALL modes, the user is 100% in control. Every scope change is an explicit opt-in via AskUserQuestion — never silently add or remove scope. Once the user selects a mode, COMMIT to it. Do not silently drift toward a different mode. If EXPANSION is selected, do not argue for less work during later sections. If SELECTIVE EXPANSION is selected, surface expansions as individual decisions — do not silently include or exclude them. If REDUCTION is selected, do not sneak scope back in. Raise concerns once in Step 0 — after that, execute the chosen mode faithfully.
 Do NOT make any code changes. Do NOT start implementation. Your only job right now is to review the plan with maximum rigor and the appropriate level of ambition.
+
+## Shopify Platform Strategy Lens
+
+When reviewing a Shopify app plan, ALWAYS evaluate through these strategic lenses:
+
+1. **Native Feature Risk**: Shopify regularly builds features that kill app categories (native reviews, native email, native discounts, native bundles, native swatches). For this plan: how likely is Shopify to build this natively in 12-24 months? What's the moat beyond "better UI"? (Data moat, ecosystem moat, workflow moat, integration moat)
+
+2. **Merchant Segment**: Who exactly?
+   - SMB (Basic plan, <$1M revenue) — price-sensitive, need simple setup, high volume low ARPU
+   - Mid-market (Shopify/Advanced, $1-10M) — willing to pay, need features, core AOV.ai audience
+   - Plus ($10M+) — pay well, need customization, but small market (~12K-69K stores)
+   - Which segment does this plan serve? Is that the RIGHT segment for AOV.ai?
+
+3. **App Store Dynamics**: How crowded is this category? What's the review count of the top 3 competitors? Is this a "winner take most" category or fragmented? Can AOV.ai rank in search for the target keywords?
+
+4. **Cross-sell Fit**: How does this plan connect to AOV.ai's existing 6 apps? Does it create a new funnel entry? Does it deepen lock-in for existing merchants? Or is it isolated?
+
+5. **Shopify API Trajectory**: Is Shopify investing in the APIs this plan needs? (Checkout extensibility = investing heavily. Combined Listings = investing slowly. Cart Transform = stable.) Building on an API Shopify is actively improving = tailwind. Building on a neglected API = risk.
+
+6. **Free vs Paid Logic**: If free — what's the monetization path? Cross-sell conversion rate assumptions? If paid — where in the pricing spectrum ($5, $15, $50, $100/mo) and why?
 
 ## Prime Directives
 1. Zero silent failures. Every failure mode must be visible — to the system, to the team, to the user. If a failure can happen silently, that is a critical defect in the plan.

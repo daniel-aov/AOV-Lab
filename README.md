@@ -1,254 +1,192 @@
 # aov-lab
 
-Hi, I'm [Garry Tan](https://x.com/garrytan). I'm President & CEO of [Y Combinator](https://www.ycombinator.com/), where I've worked with thousands of startups including Coinbase, Instacart, and Rippling when the founders were just one or two people in a garage — companies now worth tens of billions of dollars. Before YC, I designed the Palantir logo and was one of the first eng manager/PM/designers there. I cofounded Posterous, a blog platform we sold to Twitter. I built Bookface, YC's internal social network, back in 2013. I've been building products as a designer, PM, and eng manager for a long time.
+aov-lab biến Claude Code thành đội ngũ chuyên Shopify app mà bạn thực sự điều hành — một market analyst phân tích đối thủ bằng data thật từ StoreLead, một product partner hỏi ngược "bằng chứng merchants cần cái này ở đâu?" trước khi bạn viết code, một eng manager chốt kiến trúc với 10-point Shopify checklist, một designer đảm bảo Polaris compliance và mobile-first, một staff engineer bắt 10 lỗi mà App Store sẽ reject, một QA lead mở browser thật click qua embedded app và storefront widget, và một release engineer check 12-item submission checklist trước khi push. 15 specialists, tất cả là slash commands, tất cả đã train kiến thức Shopify.
 
-And right now I am in the middle of something that feels like a new era entirely.
 
-In the last 60 days I have written **over 600,000 lines of production code** — 35% tests — and I am doing **10,000 to 20,000 usable lines of code per day** as a part-time part of my day while doing all my duties as CEO of YC. That is not a typo. My last `/retro` (developer stats from the last 7 days) across 3 projects: **140,751 lines added, 362 commits, ~115k net LOC**. The models are getting dramatically better every week. We are at the dawn of something real — one person shipping at a scale that used to require a team of twenty.
+**Research → Think → Plan → Build → Review → Test → Ship**
 
-**2026 — 1,237 contributions and counting:**
+`/research` tìm gaps thị trường (kết hợp StoreLead API + web search). `/office-hours` đọc research rồi viết design doc. `/plan-eng-review` đọc design doc rồi chốt kiến trúc + test plan. `/review` check code theo 10 Shopify rejection patterns. `/qa` test trên browser thật với Shopify-specific flows. `/ship` check 12-item App Store submission checklist rồi push.
 
-![GitHub contributions 2026 — 1,237 contributions, massive acceleration in Jan-Mar](docs/images/github-2026.png)
+Không bước nào bị bỏ qua vì mỗi bước đọc output bước trước.
 
-**2013 — when I built Bookface at YC (772 contributions):**
+## 15 Skills
 
-![GitHub contributions 2013 — 772 contributions building Bookface at YC](docs/images/github-2013.png)
+### Research & Strategy
 
-Same person. Different era. The difference is the tooling.
+| Skill | Vai trò | Làm gì |
+|-------|---------|--------|
+| `/research` | **Market Analyst** | Phân tích thị trường Shopify từ 6 góc. Tích hợp **StoreLead API** cho data chính xác (install counts thật, reviews, pricing). Gap score = Pain x Gap x Feasibility. |
+| `/office-hours` | **Product Partner** | Hỏi 6 câu khó trước khi build. 6 Shopify lenses: App Store positioning, API feasibility, pricing model, native feature risk, merchant journey, theme compatibility. Output: design doc. |
+| `/plan-ceo-review` | **CEO / Founder** | Challenge strategy. 6 Shopify Platform Strategy lenses: native feature risk, merchant segment (SMB/mid-market/Plus), App Store dynamics, cross-sell fit, API trajectory, free vs paid logic. |
 
-**aov-lab is how I do it.** It is my open source software factory. It turns Claude Code into a virtual engineering team you actually manage — a CEO who rethinks the product, an eng manager who locks the architecture, a designer who catches AI slop, a paranoid reviewer who finds production bugs, a QA lead who opens a real browser and clicks through your app, and a release engineer who ships the PR. Fifteen specialists and six power tools, all as slash commands, all Markdown, **all free, MIT license, available right now.**
+### Architecture & Design
 
-I am learning how to get to the edge of what agentic systems can do as of March 2026, and this is my live experiment. I am sharing it because I want the whole world on this journey with me.
+| Skill | Vai trò | Làm gì |
+|-------|---------|--------|
+| `/plan-eng-review` | **Eng Manager** | Chốt kiến trúc + 10-point Shopify checklist (metafields vs DB, theme extension, rate limits, GDPR, webhooks, billing, sessions, scopes, theme compat, cross-app). Output: decisions + test plan. |
+| `/plan-design-review` | **Senior Designer** | Chấm design 0-10. 7 Shopify checks: Polaris compliance, theme-native storefront, mobile-first (44px touch targets), App Store screenshots, onboarding <5min, merchant vs customer UX, loading states. |
+| `/design-consultation` | **Design Partner** | Build design system. Shopify two-surface guidance: Admin = Polaris, Storefront = theme-native, Listing = custom brand. Output: DESIGN.md. |
 
-Fork it. Improve it. Make it yours. Don't player hate, appreciate.
+### Build & Review
 
-**Who this is for:**
-- **Founders and CEOs** — especially technical ones who still want to ship. This is how you build like a team of twenty.
-- **First-time Claude Code users** — aov-lab is the best way to start. Structured roles instead of a blank prompt.
-- **Tech leads and staff engineers** — bring rigorous review, QA, and release automation to every PR
+| Skill | Vai trò | Làm gì |
+|-------|---------|--------|
+| `/review` | **Staff Engineer** | Code review + 10 Shopify rejection patterns: GDPR hooks, session tokens, rate limiting, metafield namespace, webhook verification, billing edge cases, storefront performance <50KB. |
+| `/investigate` | **Debugger** | Debug có hệ thống. 9 Shopify bug patterns: session token expiry, webhook miss, API rate limit 429, theme incompatibility, CSS conflict, scope permissions, checkout migration, metafield loss, billing currency mismatch. |
+| `/design-review` | **Designer Who Codes** | Audit visual trên live site. Shopify standards: Polaris admin UI, theme-native storefront widget, App Store screenshot quality, mobile-first. Fix với atomic commits + before/after screenshots. |
 
-## Quick start: your first 10 minutes
+### Test & Ship
 
-1. Install aov-lab (30 seconds — see below)
-2. Run `/office-hours` — describe what you're building. It will reframe the problem before you write a line of code.
-3. Run `/plan-ceo-review` on any feature idea
-4. Run `/review` on any branch with changes
-5. Run `/qa` on your staging URL
-6. Stop there. You'll know if this is for you.
+| Skill | Vai trò | Làm gì |
+|-------|---------|--------|
+| `/qa` | **QA Lead** | Test trên browser thật. Auto-detect app type từ URL: embedded admin, storefront widget, checkout extension. Shopify-specific test flows cho mỗi loại. |
+| `/qa-only` | **QA Reporter** | Như `/qa` nhưng chỉ report, không fix. |
+| `/browse` | **QA Engineer** | Headless Chromium. Click, screenshot, check responsive. ~100ms/command. |
+| `/ship` | **Release Engineer** | Sync main, run tests, push, open PR. 12-item Shopify App Store Submission Checklist auto-check trước khi push. |
+| `/document-release` | **Technical Writer** | Update docs cho match code đã ship. |
 
-Expect first useful run in under 5 minutes on any repo with tests already set up.
+### Utility
 
-**If you only read one more section, read this one.**
+| Skill | Làm gì |
+|-------|--------|
+| `/careful` | Cảnh báo trước lệnh nguy hiểm: rm -rf, DROP TABLE, force-push. |
+| `/setup-browser-cookies` | Import cookies từ Chrome/Arc/Brave vào headless browser. Test authenticated Shopify pages. |
 
-## Install — takes 30 seconds
+## Điểm mạnh nhất: Research → Think → Plan
 
-**Requirements:** [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [Git](https://git-scm.com/), [Bun](https://bun.sh/) v1.0+
+Phần code review, QA, ship — bất kỳ AI coding tool nào cũng làm được. Phần **nghĩ trước khi code** mới là thứ hiếm.
 
-### Step 1: Install on your machine
+`/research` không phải Google rồi đọc. Nó search 6 góc, đọc actual pages, cross-reference, rồi cho ra bảng cơ hội có số liệu. Khi có **StoreLead API key**, pull data chính xác: install counts thật, full reviews (sort 1-star trước = pain points), stores đang dùng app nào — tốt hơn web search cho số liệu cứng.
 
-Open Claude Code and paste this. Claude does the rest.
+`/office-hours` không phải "tell me your idea and I'll say it's great." Nó hỏi ngược: bằng chứng demand ở đâu? Merchants đang giải quyết bằng gì? Version nhỏ nhất ai trả tiền tuần này? Nếu bạn không trả lời được — đó là thứ quan trọng nhất cần tìm trước khi viết code.
 
-> Install aov-lab: run **`git clone https://gitlab.com/aov.ai/aov-lab.git ~/.claude/skills/aov-lab && cd ~/.claude/skills/aov-lab && ./setup`** then add a "aov-lab" section to CLAUDE.md that says to use the /browse skill from aov-lab for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, and lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /retro, /investigate, /document-release, /codex, /careful, /freeze, /guard, /unfreeze, /aov-lab-upgrade. Then ask the user if they also want to add aov-lab to the current project so teammates get it.
+`/plan-eng-review` chuyển design doc thành architecture decisions cụ thể. Metafields hay DB? Liquid hay JS? Lazy load hay preload? Mỗi quyết định có options, tradeoffs, recommendation. Bạn ra khỏi session với decisions đã chốt, test plan đã mapped, failure modes đã identified.
 
-### Step 2: Add to your repo so teammates get it (optional)
+Ba skills này nối thành pipeline — research output → design doc → architecture decisions → test plan. Trước khi viết dòng code đầu tiên, đã biết chính xác build gì, cho ai, bằng cách nào.
 
-> Add aov-lab to this project: run **`cp -Rf ~/.claude/skills/aov-lab .claude/skills/aov-lab && rm -rf .claude/skills/aov-lab/.git && cd .claude/skills/aov-lab && ./setup`** then add a "aov-lab" section to this project's CLAUDE.md that says to use the /browse skill from aov-lab for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /retro, /investigate, /document-release, /codex, /careful, /freeze, /guard, /unfreeze, /aov-lab-upgrade, and tells Claude that if aov-lab skills aren't working, run `cd .claude/skills/aov-lab && ./setup` to build the binary and register skills.
+## Research app mới
 
-Real files get committed to your repo (not a submodule), so `git clone` just works. Everything lives inside `.claude/`. Nothing touches your PATH or runs in the background.
+Khi muốn tìm cơ hội build app mới trên Shopify:
 
-### Codex, Gemini CLI, or Cursor
+```
+/research
+> "Thị trường [category] trên Shopify — đối thủ, pricing, gaps"
+→ StoreLead API: install counts thật, reviews, pricing per app
+→ Web search: pain points từ forums, reddit, community
+→ Gap analysis: feature gap, pricing gap, technical gap
+→ Opportunity scoring: cơ hội nào đáng làm nhất?
 
-aov-lab works on any agent that supports the [SKILL.md standard](https://github.com/anthropics/claude-code). Skills live in `.agents/skills/` and are discovered automatically.
+/office-hours
+> "Muốn build app [idea] dựa trên research"
+→ Challenge: bằng chứng demand ở đâu?
+→ Challenge: Shopify API có hỗ trợ không?
+→ Shopify lenses: App Store positioning, native risk, pricing model
+→ Output: Design doc với narrowest wedge + approaches
 
+/plan-eng-review
+→ Chốt kiến trúc với 10-point Shopify checklist
+→ Test plan mapped cho mọi flow
+```
+
+Kết quả: research report + design doc + architecture decisions + test plan. Chưa viết dòng code nào.
+
+## Optimize app cũ
+
+Khi app đang chạy, đang có merchants, muốn cải thiện:
+
+```
+/research
+> "App [category] của mình so với đối thủ thế nào?"
+→ StoreLead: so sánh install counts, reviews, pricing vs top đối thủ
+→ 1-star reviews đối thủ = cơ hội cho mình
+→ Shopify API mới nào mở ra tính năng chưa ai build?
+
+/office-hours
+> "Muốn thêm [feature] vào app hiện tại"
+→ Challenge: merchants nào đã yêu cầu?
+→ Challenge: version nhỏ nhất ship trước là gì?
+→ Challenge: có break existing merchants không?
+→ Output: Design doc + backward compatibility plan
+
+/plan-eng-review
+→ Metafield namespace mới conflict với hiện tại không?
+→ Thêm scope mới cần justify cho App Store review?
+→ Webhook hiện tại thiếu retry — cần fix trước khi thêm feature?
+
+/review → /qa → /ship
+→ 10 Shopify rejection patterns auto-check
+→ Browser thật verify feature mới (embedded app / storefront / checkout)
+→ 12-item App Store Submission Checklist
+```
+
+Kết quả: feature mới dựa trên data thị trường thật, không phải đoán. Kiến trúc tính trước compatibility. App Store không reject.
+
+## Tech stack
+
+| Component | Công nghệ | Vai trò |
+|-----------|-----------|---------|
+| Runtime | **Bun** | Chạy scripts, build, test |
+| Language | **TypeScript** | Toàn bộ source |
+| Browser | **Playwright + Chromium** | Headless browser cho /browse, /qa |
+| AI Engine | **Claude Code** | Chạy skills, đọc SKILL.md, gọi tools |
+| AI SDK | **Anthropic SDK** | Cho evals và LLM judge |
+| Market Data | **StoreLead API** (optional) | Data chính xác về Shopify apps + stores |
+| Skills | **Markdown (.tmpl)** | Mỗi skill = 1 prompt template |
+
+Skills là prompt templates Claude Code đọc và thực thi. Sửa behavior: edit file `.tmpl` → chạy `bun run gen:skill-docs`.
+
+## Shopify knowledge tích hợp
+
+11/15 skills đã train kiến thức Shopify chuyên sâu (trong CLAUDE.md + từng SKILL.md):
+
+- **Architecture**: Theme Extension, Embedded App, Shopify Functions, Webhooks, Metafields
+- **APIs**: Admin GraphQL, Storefront, Billing, Cart Transform, Checkout UI Extensions
+- **App Store**: GDPR requirements, session tokens, listing rules, ASO, submission checklist
+- **Market Data**: StoreLead API integration cho install counts, reviews, store-level data
+- **Design**: Polaris (admin), theme-native (storefront), two-surface guidance
+- **QA**: Shopify-specific test flows (embedded app, storefront widget, checkout extension)
+- **Debugging**: 9 common Shopify bug patterns (session token, webhook miss, rate limit, theme compat...)
+- **Native Features**: Biết Shopify đã có gì gốc để không build trùng
+- **Common Pitfalls**: Rate limits, webhook reliability, theme conflicts, app conflicts
+
+## Cài đặt
+
+### Cho máy cá nhân
 ```bash
-git clone https://gitlab.com/aov.ai/aov-lab.git ~/.codex/skills/aov-lab
-cd ~/.codex/skills/aov-lab && ./setup --host codex
+git clone https://github.com/daniel-aov/AOV-Lab.git ~/.claude/skills/aov-lab
+cd ~/.claude/skills/aov-lab && ./setup
 ```
 
-Or let setup auto-detect which agents you have installed:
-
+### Cho cả team (cài vào repo)
 ```bash
-git clone https://gitlab.com/aov.ai/aov-lab.git ~/aov-lab
-cd ~/aov-lab && ./setup --host auto
+cp -Rf ~/.claude/skills/aov-lab .claude/skills/aov-lab
+rm -rf .claude/skills/aov-lab/.git
+cd .claude/skills/aov-lab && ./setup
 ```
 
-This installs to `~/.claude/skills/aov-lab` and/or `~/.codex/skills/aov-lab` depending on what's available. All 21 skills work across all supported agents. Hook-based safety skills (careful, freeze, guard) use inline safety advisory prose on non-Claude hosts.
-
-## See it work
-
-```
-You:    I want to build a daily briefing app for my calendar.
-You:    /office-hours
-Claude: [asks about the pain — specific examples, not hypotheticals]
-
-You:    Multiple Google calendars, events with stale info, wrong locations.
-        Prep takes forever and the results aren't good enough...
-
-Claude: I'm going to push back on the framing. You said "daily briefing
-        app." But what you actually described is a personal chief of
-        staff AI.
-        [extracts 5 capabilities you didn't realize you were describing]
-        [challenges 4 premises — you agree, disagree, or adjust]
-        [generates 3 implementation approaches with effort estimates]
-        RECOMMENDATION: Ship the narrowest wedge tomorrow, learn from
-        real usage. The full vision is a 3-month project — start with
-        the daily briefing that actually works.
-        [writes design doc → feeds into downstream skills automatically]
-
-You:    /plan-ceo-review
-        [reads the design doc, challenges scope, runs 10-section review]
-
-You:    /plan-eng-review
-        [ASCII diagrams for data flow, state machines, error paths]
-        [test matrix, failure modes, security concerns]
-
-You:    Approve plan. Exit plan mode.
-        [writes 2,400 lines across 11 files. ~8 minutes.]
-
-You:    /review
-        [AUTO-FIXED] 2 issues. [ASK] Race condition → you approve fix.
-
-You:    /qa https://staging.myapp.com
-        [opens real browser, clicks through flows, finds and fixes a bug]
-
-You:    /ship
-        Tests: 42 → 51 (+9 new). PR: github.com/you/app/pull/42
-```
-
-You said "daily briefing app." The agent said "you're building a chief of staff AI" — because it listened to your pain, not your feature request. Then it challenged your premises, generated three approaches, recommended the narrowest wedge, and wrote a design doc that fed into every downstream skill. Eight commands. That is not a copilot. That is a team.
-
-## The sprint
-
-aov-lab is a process, not a collection of tools. The skills are ordered the way a sprint runs:
-
-**Think → Plan → Build → Review → Test → Ship → Reflect**
-
-Each skill feeds into the next. `/office-hours` writes a design doc that `/plan-ceo-review` reads. `/plan-eng-review` writes a test plan that `/qa` picks up. `/review` catches bugs that `/ship` verifies are fixed. Nothing falls through the cracks because every step knows what came before it.
-
-One sprint, one person, one feature — that takes about 30 minutes with aov-lab. But here's what changes everything: you can run 10-15 of these sprints in parallel. Different features, different branches, different agents — all at the same time. That is how I ship 10,000+ lines of production code per day while doing my actual job.
-
-| Skill | Your specialist | What they do |
-|-------|----------------|--------------|
-| `/office-hours` | **YC Office Hours** | Start here. Six forcing questions that reframe your product before you write code. Pushes back on your framing, challenges premises, generates implementation alternatives. Design doc feeds into every downstream skill. |
-| `/plan-ceo-review` | **CEO / Founder** | Rethink the problem. Find the 10-star product hiding inside the request. Four modes: Expansion, Selective Expansion, Hold Scope, Reduction. |
-| `/plan-eng-review` | **Eng Manager** | Lock in architecture, data flow, diagrams, edge cases, and tests. Forces hidden assumptions into the open. |
-| `/plan-design-review` | **Senior Designer** | Rates each design dimension 0-10, explains what a 10 looks like, then edits the plan to get there. AI Slop detection. Interactive — one AskUserQuestion per design choice. |
-| `/design-consultation` | **Design Partner** | Build a complete design system from scratch. Knows the landscape, proposes creative risks, generates realistic product mockups. Design at the heart of all other phases. |
-| `/review` | **Staff Engineer** | Find the bugs that pass CI but blow up in production. Auto-fixes the obvious ones. Flags completeness gaps. |
-| `/investigate` | **Debugger** | Systematic root-cause debugging. Iron Law: no fixes without investigation. Traces data flow, tests hypotheses, stops after 3 failed fixes. |
-| `/design-review` | **Designer Who Codes** | Same audit as /plan-design-review, then fixes what it finds. Atomic commits, before/after screenshots. |
-| `/qa` | **QA Lead** | Test your app, find bugs, fix them with atomic commits, re-verify. Auto-generates regression tests for every fix. |
-| `/qa-only` | **QA Reporter** | Same methodology as /qa but report only. Use when you want a pure bug report without code changes. |
-| `/ship` | **Release Engineer** | Sync main, run tests, audit coverage, push, open PR. Bootstraps test frameworks if you don't have one. One command. |
-| `/document-release` | **Technical Writer** | Update all project docs to match what you just shipped. Catches stale READMEs automatically. |
-| `/retro` | **Eng Manager** | Team-aware weekly retro. Per-person breakdowns, shipping streaks, test health trends, growth opportunities. |
-| `/browse` | **QA Engineer** | Give the agent eyes. Real Chromium browser, real clicks, real screenshots. ~100ms per command. |
-| `/setup-browser-cookies` | **Session Manager** | Import cookies from your real browser (Chrome, Arc, Brave, Edge) into the headless session. Test authenticated pages. |
-
-### Power tools
-
-| Skill | What it does |
-|-------|-------------|
-| `/codex` | **Second Opinion** — independent code review from OpenAI Codex CLI. Three modes: review (pass/fail gate), adversarial challenge, and open consultation. Cross-model analysis when both `/review` and `/codex` have run. |
-| `/careful` | **Safety Guardrails** — warns before destructive commands (rm -rf, DROP TABLE, force-push). Say "be careful" to activate. Override any warning. |
-| `/freeze` | **Edit Lock** — restrict file edits to one directory. Prevents accidental changes outside scope while debugging. |
-| `/guard` | **Full Safety** — `/careful` + `/freeze` in one command. Maximum safety for prod work. |
-| `/unfreeze` | **Unlock** — remove the `/freeze` boundary. |
-| `/aov-lab-upgrade` | **Self-Updater** — upgrade aov-lab to latest. Detects global vs vendored install, syncs both, shows what changed. |
-
-**[Deep dives with examples and philosophy for every skill →](docs/skills.md)**
-
-## What's new and why it matters
-
-**`/office-hours` reframes your product before you write code.** You say "daily briefing app." It listens to your actual pain, pushes back on the framing, tells you you're really building a personal chief of staff AI, challenges your premises, and generates three implementation approaches with effort estimates. The design doc it writes feeds directly into `/plan-ceo-review` and `/plan-eng-review` — so every downstream skill starts with real clarity instead of a vague feature request.
-
-**Design is at the heart.** `/design-consultation` doesn't just pick fonts. It researches what's out there in your space, proposes safe choices AND creative risks, generates realistic mockups of your actual product, and writes `DESIGN.md` — and then `/design-review` and `/plan-eng-review` read what you chose. Design decisions flow through the whole system.
-
-**`/qa` was a massive unlock.** It let me go from 6 to 12 parallel workers. Claude Code saying *"I SEE THE ISSUE"* and then actually fixing it, generating a regression test, and verifying the fix — that changed how I work. The agent has eyes now.
-
-**Smart review routing.** Just like at a well-run startup: CEO doesn't have to look at infra bug fixes, design review isn't needed for backend changes. aov-lab tracks what reviews are run, figures out what's appropriate, and just does the smart thing. The Review Readiness Dashboard tells you where you stand before you ship.
-
-**Test everything.** `/ship` bootstraps test frameworks from scratch if your project doesn't have one. Every `/ship` run produces a coverage audit. Every `/qa` bug fix generates a regression test. 100% test coverage is the goal — tests make vibe coding safe instead of yolo coding.
-
-**`/document-release` is the engineer you never had.** It reads every doc file in your project, cross-references the diff, and updates everything that drifted. README, ARCHITECTURE, CONTRIBUTING, CLAUDE.md, TODOS — all kept current automatically. And now `/ship` auto-invokes it — docs stay current without an extra command.
-
-**Browser handoff when the AI gets stuck.** Hit a CAPTCHA, auth wall, or MFA prompt? `$B handoff` opens a visible Chrome at the exact same page with all your cookies and tabs intact. Solve the problem, tell Claude you're done, `$B resume` picks up right where it left off. The agent even suggests it automatically after 3 consecutive failures.
-
-**Multi-AI second opinion.** `/codex` gets an independent review from OpenAI's Codex CLI — a completely different AI looking at the same diff. Three modes: code review with a pass/fail gate, adversarial challenge that actively tries to break your code, and open consultation with session continuity. When both `/review` (Claude) and `/codex` (OpenAI) have reviewed the same branch, you get a cross-model analysis showing which findings overlap and which are unique to each.
-
-**Safety guardrails on demand.** Say "be careful" and `/careful` warns before any destructive command — rm -rf, DROP TABLE, force-push, git reset --hard. `/freeze` locks edits to one directory while debugging so Claude can't accidentally "fix" unrelated code. `/guard` activates both. `/investigate` auto-freezes to the module being investigated.
-
-**Proactive skill suggestions.** aov-lab notices what stage you're in — brainstorming, reviewing, debugging, testing — and suggests the right skill. Don't like it? Say "stop suggesting" and it remembers across sessions.
-
-## 10-15 parallel sprints
-
-aov-lab is powerful with one sprint. It is transformative with ten running at once.
-
-[Conductor](https://conductor.build) runs multiple Claude Code sessions in parallel — each in its own isolated workspace. One session running `/office-hours` on a new idea, another doing `/review` on a PR, a third implementing a feature, a fourth running `/qa` on staging, and six more on other branches. All at the same time. I regularly run 10-15 parallel sprints — that's the practical max right now.
-
-The sprint structure is what makes parallelism work. Without a process, ten agents is ten sources of chaos. With a process — think, plan, build, review, test, ship — each agent knows exactly what to do and when to stop. You manage them the way a CEO manages a team: check in on the decisions that matter, let the rest run.
-
----
-
-## Come ride the wave
-
-This is **free, MIT licensed, open source, available now.** No premium tier. No waitlist. No strings.
-
-I open sourced how I do development and I am actively upgrading my own software factory here. You can fork it and make it your own. That's the whole point. I want everyone on this journey.
-
-Same tools, different outcome — because aov-lab gives you structured roles and review gates, not generic agent chaos. That governance is the difference between shipping fast and shipping reckless.
-
-The models are getting better fast. The people who figure out how to work with them now — really work with them, not just dabble — are going to have a massive advantage. This is that window. Let's go.
-
-Fifteen specialists and six power tools. All slash commands. All Markdown. All free. **[gitlab.com/aov.ai/aov-lab](https://gitlab.com/aov.ai/aov-lab)** — MIT License
-
-> **We're hiring.** Want to ship 10K+ LOC/day and help harden aov-lab?
-> Come work at YC — [ycombinator.com/software](https://ycombinator.com/software)
-> Extremely competitive salary and equity. San Francisco, Dogpatch District.
-
-## Docs
-
-| Doc | What it covers |
-|-----|---------------|
-| [Skill Deep Dives](docs/skills.md) | Philosophy, examples, and workflow for every skill (includes Greptile integration) |
-| [Architecture](ARCHITECTURE.md) | Design decisions and system internals |
-| [Browser Reference](BROWSER.md) | Full command reference for `/browse` |
-| [Contributing](CONTRIBUTING.md) | Dev setup, testing, contributor mode, and dev mode |
-| [Changelog](CHANGELOG.md) | What's new in every version |
-
-## Privacy & Telemetry
-
-aov-lab includes **opt-in** usage telemetry to help improve the project. Here's exactly what happens:
-
-- **Default is off.** Nothing is sent anywhere unless you explicitly say yes.
-- **On first run,** aov-lab asks if you want to share anonymous usage data. You can say no.
-- **What's sent (if you opt in):** skill name, duration, success/fail, aov-lab version, OS. That's it.
-- **What's never sent:** code, file paths, repo names, branch names, prompts, or any user-generated content.
-- **Change anytime:** `aov-lab-config set telemetry off` disables everything instantly.
-
-Data is stored in [Supabase](https://supabase.com) (open source Firebase alternative). The schema is in [`supabase/migrations/001_telemetry.sql`](supabase/migrations/001_telemetry.sql) — you can verify exactly what's collected. The Supabase publishable key in the repo is a public key (like a Firebase API key) — row-level security policies restrict it to insert-only access.
-
-**Local analytics are always available.** Run `aov-lab-analytics` to see your personal usage dashboard from the local JSONL file — no remote data needed.
-
-## Troubleshooting
-
-**Skill not showing up?** `cd ~/.claude/skills/aov-lab && ./setup`
-
-**`/browse` fails?** `cd ~/.claude/skills/aov-lab && bun install && bun run build`
-
-**Stale install?** Run `/aov-lab-upgrade` — or set `auto_upgrade: true` in `~/.aov-lab/config.yaml`
-
-**Claude says it can't see the skills?** Make sure your project's `CLAUDE.md` has a aov-lab section. Add this:
-
-```
+Thêm vào `CLAUDE.md` của project:
+```markdown
 ## aov-lab
 Use /browse from aov-lab for all web browsing. Never use mcp__claude-in-chrome__* tools.
-Available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review,
-/design-consultation, /review, /ship, /browse, /qa, /qa-only, /design-review,
-/setup-browser-cookies, /retro, /investigate, /document-release, /codex, /careful,
-/freeze, /guard, /unfreeze, /aov-lab-upgrade.
+Available skills: /research, /office-hours, /plan-ceo-review, /plan-eng-review,
+/plan-design-review, /design-consultation, /review, /ship, /qa, /qa-only, /browse,
+/investigate, /design-review, /document-release, /setup-browser-cookies, /careful.
 ```
 
-## License
+### StoreLead API (optional, cho /research)
+```bash
+# Đăng ký tại storeleads.app/api, rồi:
+aov-lab-config set storeleads_api_key "YOUR_KEY"
+```
 
-MIT. Free forever. Go build something.
+## Output lưu ở đâu?
+
+| Output | Lưu tại |
+|--------|---------|
+| Research reports | `~/Documents/aov-lab-research/` |
+| Design docs | `~/Documents/aov-lab-research/` |
+| Test plans | `~/Documents/aov-lab-research/` |
+
+## Credit
+
+Dựa trên [gstack](https://github.com/garrytan/gstack) v0.9.0 — MIT License.

@@ -66,11 +66,11 @@ If output shows `UPGRADE_AVAILABLE <old> <new>`: read `~/.claude/skills/aov-lab/
 
 If `LAKE_INTRO` is `no`: Before continuing, introduce the Completeness Principle.
 Tell the user: "aov-lab follows the **Boil the Lake** principle — always do the complete
-thing when AI makes the marginal cost near-zero. Read more: https://garryslist.org/posts/boil-the-ocean"
-Then offer to open the essay in their default browser:
+thing when AI makes the marginal cost near-zero."
+Then mark as seen:
 
 ```bash
-open https://garryslist.org/posts/boil-the-ocean
+echo "Completeness Principle: always do the complete thing when AI makes the marginal cost near-zero."
 touch ~/.aov-lab/.completeness-intro-seen
 ```
 
@@ -224,6 +224,22 @@ never blocks the user.
 **NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.**
 
 Fixing symptoms creates whack-a-mole debugging. Every fix that doesn't address root cause makes the next bug harder to find. Find the root cause, then fix it.
+
+## Shopify App Common Bug Patterns
+
+When investigating a Shopify app bug, check these patterns FIRST — they cover 80% of issues:
+
+| Symptom | Likely Root Cause | How to verify |
+|---------|------------------|---------------|
+| App shows blank/error after idle | **Session token expired** | Check if app refreshes token after 60min. App Bridge `getSessionToken()` must be called before each API request, not cached. |
+| Data stale / not updating | **Missed webhook** | Check webhook delivery logs in Partner Dashboard. Shopify webhooks can miss delivery — need reconciliation job. |
+| 429 errors / app slow | **API rate limit** | Check GraphQL query cost. Shopify uses cost-based throttling. No retry with backoff = broken. |
+| Widget not showing on store | **Theme incompatibility** | Check if Theme App Extension is enabled in theme editor. Some themes don't support app blocks. Check if OS 2.0 theme. |
+| Widget shows but looks broken | **CSS conflict** | App CSS conflicts with theme CSS. Check: are selectors namespaced? Are styles scoped to app block? |
+| App works on dev but not production | **Scope permissions** | Compare scopes in shopify.app.toml vs what's actually approved. Missing scope = silent API failure. |
+| Checkout extension not appearing | **Checkout extensibility migration** | Store may be on legacy checkout. Check: Plus plan? Checkout extensibility enabled? |
+| Metafield data lost | **Uninstall/reinstall cycle** | App uninstall may have cleaned metafields. Check app/uninstalled webhook handler. |
+| Billing charge failed | **Currency mismatch / declined** | Check merchant's Shopify Payments currency vs app billing currency. Check charge status in Partner Dashboard. |
 
 ---
 

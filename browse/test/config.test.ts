@@ -136,24 +136,24 @@ describe('config', () => {
 
     test('parses SSH remote URLs', () => {
       // Test the regex directly since we can't mock Bun.spawnSync easily
-      const url = 'git@github.com:garrytan/aov-lab.git';
+      const url = 'git@github.com:daniel-aov/AOV-Lab.git';
       const match = url.match(/[:/]([^/]+)\/([^/]+?)(?:\.git)?$/);
       expect(match).not.toBeNull();
-      expect(`${match![1]}-${match![2]}`).toBe('garrytan-aov-lab');
+      expect(`${match![1]}-${match![2]}`).toBe('daniel-aov-AOV-Lab');
     });
 
     test('parses HTTPS remote URLs', () => {
-      const url = 'https://gitlab.com/aov.ai/aov-lab.git';
+      const url = 'https://github.com/daniel-aov/AOV-Lab.git';
       const match = url.match(/[:/]([^/]+)\/([^/]+?)(?:\.git)?$/);
       expect(match).not.toBeNull();
-      expect(`${match![1]}-${match![2]}`).toBe('garrytan-aov-lab');
+      expect(`${match![1]}-${match![2]}`).toBe('daniel-aov-AOV-Lab');
     });
 
     test('parses HTTPS remote URLs without .git suffix', () => {
-      const url = 'https://gitlab.com/aov.ai/aov-lab';
+      const url = 'https://github.com/daniel-aov/AOV-Lab';
       const match = url.match(/[:/]([^/]+)\/([^/]+?)(?:\.git)?$/);
       expect(match).not.toBeNull();
-      expect(`${match![1]}-${match![2]}`).toBe('garrytan-aov-lab');
+      expect(`${match![1]}-${match![2]}`).toBe('daniel-aov-AOV-Lab');
     });
   });
 

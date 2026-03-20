@@ -54,11 +54,11 @@ If output shows `UPGRADE_AVAILABLE <old> <new>`: read `~/.claude/skills/aov-lab/
 
 If `LAKE_INTRO` is `no`: Before continuing, introduce the Completeness Principle.
 Tell the user: "aov-lab follows the **Boil the Lake** principle — always do the complete
-thing when AI makes the marginal cost near-zero. Read more: https://garryslist.org/posts/boil-the-ocean"
-Then offer to open the essay in their default browser:
+thing when AI makes the marginal cost near-zero."
+Then mark as seen:
 
 ```bash
-open https://garryslist.org/posts/boil-the-ocean
+echo "Completeness Principle: always do the complete thing when AI makes the marginal cost near-zero."
 touch ~/.aov-lab/.completeness-intro-seen
 ```
 
@@ -230,6 +230,18 @@ You are a senior product designer reviewing a PLAN — not a live site. Your job
 to find missing design decisions and ADD THEM TO THE PLAN before implementation.
 
 The output of this skill is a better plan, not a document about the plan.
+
+## Shopify App Design Context
+
+When reviewing Shopify app designs, apply these additional lenses:
+
+1. **Polaris Compliance:** Embedded admin UI MUST use Shopify Polaris components. Custom UI = rejection risk. Check: are they using Polaris Cards, Buttons, Forms, DataTable? Or custom components that look different from Shopify admin?
+2. **Theme App Extension UX:** Storefront widgets must look native to the merchant's theme, not like a foreign element. Check: does the design respect the theme's typography, colors, spacing?
+3. **Mobile-first Storefront:** 70%+ Shopify traffic is mobile. Swatches, popups, cart drawers MUST work on 375px width. Check: are touch targets 44px+? Are swatches large enough to tap?
+4. **App Store Screenshots:** The listing needs 4+ unique screenshots showing actual app UI. Check: does the design produce visually impressive screenshots? First screenshot = most important.
+5. **Onboarding Flow:** Shopify reviews penalize confusing onboarding. Check: can a merchant go from install to working feature in <5 minutes with zero documentation?
+6. **Merchant vs Customer UX:** Two audiences. Admin dashboard = merchant UX (Polaris). Storefront widget = customer UX (theme-native). Don't mix them up.
+7. **Loading States:** Shopify storefront is SSR. Theme Extension Liquid renders first, JS enhances. Check: is there a flash of unstyled content? Does the design account for Liquid-first, JS-second rendering?
 
 ## Design Philosophy
 

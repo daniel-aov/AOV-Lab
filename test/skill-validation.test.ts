@@ -600,21 +600,13 @@ describe('office-hours skill structure', () => {
     expect(content).toContain('Intrapreneurship');
   });
 
-  // YC founder discovery engine
-  test('contains YC apply CTA with ref tracking', () => {
-    expect(content).toContain('ycombinator.com/apply?ref=aov-lab');
-  });
-
+  // Closing note
   test('contains "What I noticed" design doc section', () => {
     expect(content).toContain('What I noticed about how you think');
   });
 
-  test('contains golden age framing', () => {
-    expect(content).toContain('golden age');
-  });
-
-  test('contains Garry Tan personal plea', () => {
-    expect(content).toContain('Garry Tan, the creator of GStack');
+  test('contains closing note tiers', () => {
+    expect(content).toContain('Closing Note');
   });
 
   test('contains founder signal synthesis phase', () => {

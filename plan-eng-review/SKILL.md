@@ -53,11 +53,11 @@ If output shows `UPGRADE_AVAILABLE <old> <new>`: read `~/.claude/skills/aov-lab/
 
 If `LAKE_INTRO` is `no`: Before continuing, introduce the Completeness Principle.
 Tell the user: "aov-lab follows the **Boil the Lake** principle — always do the complete
-thing when AI makes the marginal cost near-zero. Read more: https://garryslist.org/posts/boil-the-ocean"
-Then offer to open the essay in their default browser:
+thing when AI makes the marginal cost near-zero."
+Then mark as seen:
 
 ```bash
-open https://garryslist.org/posts/boil-the-ocean
+echo "Completeness Principle: always do the complete thing when AI makes the marginal cost near-zero."
 touch ~/.aov-lab/.completeness-intro-seen
 ```
 
@@ -207,6 +207,21 @@ never blocks the user.
 # Plan Review Mode
 
 Review this plan thoroughly before making any code changes. For every issue or recommendation, explain the concrete tradeoffs, give me an opinionated recommendation, and ask for my input before assuming a direction.
+
+## Shopify App Architecture Checklist
+
+When reviewing a Shopify app plan, ALWAYS check these in the Architecture section:
+
+1. **Data Storage:** Metafields vs external DB? Metafields = simpler (no hosting cost), but limited (512KB/resource, no complex queries). Use metafields for config data, external DB for analytics/heavy queries.
+2. **Theme App Extension:** If touching storefront — is it App Block based? Does it work on OS 2.0 themes? What about legacy themes? Performance impact on collection pages?
+3. **API Rate Limits:** Shopify Admin API has rate limits (cost-based for GraphQL). Plan must include retry with backoff for bulk operations.
+4. **Webhook Reliability:** Shopify webhooks can miss delivery. Plan must include reconciliation mechanism (periodic sync job).
+5. **GDPR Compliance:** Mandatory webhooks: customers/data_request, customers/redact, shop/redact. Must exist even if app stores no customer data.
+6. **Billing:** Free app → no billing needed. Paid app → Managed Pricing (simpler) or Billing API. Must handle: install, upgrade, downgrade, uninstall gracefully.
+7. **Session Management:** Session tokens only. No third-party cookies. Must work in incognito.
+8. **Scopes:** Request minimum scopes. High-risk scopes (read_all_orders, write_checkout_extensions_apis) need justification for App Store review.
+9. **Theme Compatibility:** If storefront-facing, test matrix required: 5 free themes + 5 popular paid themes minimum.
+10. **Cross-app Communication:** If app needs to work with other AOV.ai apps, how? Shared metafield namespace? Storefront API? App Bridge postMessage?
 
 ## Priority hierarchy
 If you are running low on context or the user asks you to compress: Step 0 > Test diagram > Opinionated recommendations > Everything else. Never skip Step 0 or the test diagram.

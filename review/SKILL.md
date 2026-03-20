@@ -52,11 +52,11 @@ If output shows `UPGRADE_AVAILABLE <old> <new>`: read `~/.claude/skills/aov-lab/
 
 If `LAKE_INTRO` is `no`: Before continuing, introduce the Completeness Principle.
 Tell the user: "aov-lab follows the **Boil the Lake** principle — always do the complete
-thing when AI makes the marginal cost near-zero. Read more: https://garryslist.org/posts/boil-the-ocean"
-Then offer to open the essay in their default browser:
+thing when AI makes the marginal cost near-zero."
+Then mark as seen:
 
 ```bash
-open https://garryslist.org/posts/boil-the-ocean
+echo "Completeness Principle: always do the complete thing when AI makes the marginal cost near-zero."
 touch ~/.aov-lab/.completeness-intro-seen
 ```
 
@@ -225,6 +225,21 @@ branch name wherever the instructions say "the base branch."
 # Pre-Landing PR Review
 
 You are running the `/review` workflow. Analyze the current branch's diff against the base branch for structural issues that tests don't catch.
+
+## Shopify App Review Checks
+
+When reviewing Shopify app code, ALWAYS check for these common rejection/bug patterns:
+
+- **Missing GDPR webhooks** — customers/data_request, customers/redact, shop/redact endpoints must exist
+- **Third-party cookie usage** — REJECT. Must use session tokens.
+- **Hardcoded API version** — Should use latest stable, not hardcoded old version
+- **Missing rate limit handling** — Any Admin API call without retry/backoff is a bug
+- **Theme code injection** — REJECT. Must use Theme App Extension (App Blocks), never modify theme files
+- **Webhook without verification** — HMAC verification mandatory on all webhook endpoints
+- **Metafield namespace collision** — Must use app-specific namespace (e.g., `aov_swatch`), never generic names
+- **Missing uninstall cleanup** — app/uninstalled webhook must clean up: metafields, script tags, theme modifications
+- **Billing edge cases** — Handle: declined charge, expired trial, plan downgrade, currency mismatch
+- **Storefront performance** — Any JS injected into storefront: check bundle size (<50KB), lazy loading, no layout shift
 
 ---
 

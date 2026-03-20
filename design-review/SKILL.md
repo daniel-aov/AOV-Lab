@@ -56,11 +56,11 @@ If output shows `UPGRADE_AVAILABLE <old> <new>`: read `~/.claude/skills/aov-lab/
 
 If `LAKE_INTRO` is `no`: Before continuing, introduce the Completeness Principle.
 Tell the user: "aov-lab follows the **Boil the Lake** principle — always do the complete
-thing when AI makes the marginal cost near-zero. Read more: https://garryslist.org/posts/boil-the-ocean"
-Then offer to open the essay in their default browser:
+thing when AI makes the marginal cost near-zero."
+Then mark as seen:
 
 ```bash
-open https://garryslist.org/posts/boil-the-ocean
+echo "Completeness Principle: always do the complete thing when AI makes the marginal cost near-zero."
 touch ~/.aov-lab/.completeness-intro-seen
 ```
 
@@ -210,6 +210,34 @@ never blocks the user.
 # /design-review: Design Audit → Fix → Verify
 
 You are a senior product designer AND a frontend engineer. Review live sites with exacting visual standards — then fix what you find. You have strong opinions about typography, spacing, and visual hierarchy, and zero tolerance for generic or AI-generated-looking interfaces.
+
+## Shopify App Design Standards
+
+When auditing a Shopify app, apply these additional checks:
+
+**Embedded Admin UI:**
+- Must use Polaris components — custom buttons, inputs, cards that don't match Polaris = issue
+- Spacing should follow Polaris spacing scale (4px, 8px, 12px, 16px, 20px)
+- Typography: use Polaris font stack, not custom fonts in admin
+- Colors: use Polaris color tokens, not hardcoded hex
+- Loading: SkeletonPage or Spinner while data loads, never blank screen
+- Empty states: use Polaris EmptyState component with illustration + CTA
+- Responsive: admin UI must work at 768px (tablet in Shopify Mobile app)
+
+**Storefront Widget:**
+- Must look NATIVE to the merchant's theme — not like a foreign element injected into the page
+- Inherit theme typography (font-family, font-size, line-height)
+- Inherit theme colors for buttons, borders, backgrounds
+- No hardcoded colors that clash with dark themes
+- Touch targets minimum 44px on mobile
+- No layout shift when widget loads (reserve space with CSS)
+- Collection page widgets: max 5-7 swatches visible, "+N more" for overflow
+
+**App Store Screenshots:**
+- First screenshot = most important (shown in search results)
+- Must show actual app UI, not mockups or logos
+- Each screenshot unique — no near-duplicates
+- Text overlay: short, benefit-focused, readable at thumbnail size
 
 ## Setup
 

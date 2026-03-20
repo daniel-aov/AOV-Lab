@@ -1,5 +1,84 @@
 # aov-lab development
 
+## AOV.ai Context
+
+AOV.ai is a Shopify app brand focused on helping merchants increase Average Order Value.
+All skills should be evaluated through the lens of Shopify app development.
+
+**Current app portfolio:**
+- Bundle (Bundle Builder, Bundle Offers, Volume Discounts)
+- Free Gift (Gift with Purchase, BOGO)
+- Checkout Upsell / Checkout Widget
+- Cart Drawer
+- Pre-order
+- Post Purchase Upsell
+
+**Strategy:** Each app is a separate Shopify app listing. Shared boilerplate across apps.
+Free apps (like Color Swatch) serve as top-of-funnel to drive installs for paid apps.
+
+## Shopify App Development Knowledge
+
+### Architecture Patterns
+- **Theme App Extension** (App Blocks): widget trên storefront, no code injection vào theme.
+  Dùng Liquid + JS + CSS. Merchant drag-drop trong Theme Editor.
+- **Embedded App** (Admin): React + Polaris + App Bridge. Chạy trong iframe Shopify Admin.
+- **Shopify Functions** (Backend logic): Rust/WASM, chạy trên Shopify servers, <5ms.
+  Dùng cho: custom discounts, cart transform, order routing.
+- **Webhooks**: product/create, product/update, app/uninstalled, GDPR mandatory hooks.
+- **Metafields**: key-value storage gắn vào product/shop/customer. Theme Extension đọc bằng Liquid.
+
+### Shopify APIs
+- **Admin API (GraphQL)**: CRUD products, orders, customers, metafields. Required GraphQL từ Apr 2025.
+- **Storefront API**: Public API cho custom storefronts, headless.
+- **Billing API / Managed Pricing**: Xử lý subscription charges. Managed Pricing là default mới.
+- **Cart Transform API**: Modify cart items server-side (bundles, warranties).
+- **Checkout UI Extensions**: App blocks tại checkout page.
+
+### App Store Requirements (CRITICAL)
+- GDPR webhooks MANDATORY (Customer Data Request, Customer Redact, Shop Redact)
+- Session tokens required — KHÔNG dùng third-party cookies
+- HTTPS/TLS mandatory
+- GraphQL Admin API required cho new apps (REST is legacy)
+- Latest App Bridge version required
+- Theme modifications CHỈ qua Theme App Extension — KHÔNG sửa theme code trực tiếp
+- Không dùng "Shopify" trong app name (VD: "Shopify SEO" bị cấm, "SEO for Shopify" OK)
+- Không fake reviews, fake purchase notifications, không claim "best" / "first" / "only"
+- Billing phải qua Shopify Billing API hoặc Managed Pricing — KHÔNG off-platform billing
+- App review: 5-10 business days, >60% rejections do missing GDPR hooks hoặc broken billing
+- Demo screencast required (English or subtitled)
+- Mỗi screenshot phải unique, hiện actual app UI, không logo-only
+
+### App Store Optimization (ASO)
+- >70% downloads từ search → keywords trong app name + subtitle quan trọng nhất
+- Target long-tail keywords: "color swatch variant image" thay vì chỉ "swatch"
+- Category selection phải match intent
+- Minimum 4.0 rating để được featured
+- Encourage reviews từ happy users (nhưng KHÔNG fake)
+- Track: impressions, CTR, conversion rate hàng tuần
+
+### StoreLead API (market intelligence)
+- API cho data chính xác về Shopify apps + stores: install counts, reviews, pricing, technologies
+- Config key: `aov-lab-config set storeleads_api_key "KEY"` (đăng ký tại storeleads.app/api)
+- `/research` skill tự động dùng StoreLead khi có key — ưu tiên hơn web search cho số liệu cứng
+- Endpoints chính: search apps, app details, app reviews, domain lookup, domain apps
+- Rate limit: 5 req/s (Pro), 20 req/s (Enterprise)
+
+### Shopify Native Features (biết để không build trùng)
+- Native color swatches (Products 2.0): swatch.color, swatch.image — cơ bản, thiếu collection page
+- Native bundles: Shopify Bundles app — basic, không custom UI
+- Native discounts: automatic + manual discounts — OK cho simple cases
+- Variant limit: 2,048 variants per product (từ Oct 2025)
+- Combined Listings: chỉ Plus, parent-child model, không kết hợp được bundles
+- Shopify Magic/Sidekick: AI assistant — chỉ giúp dùng features gốc, không thêm features mới
+
+### Common Pitfalls
+- Rate limiting: Admin API có rate limits, cần retry with backoff
+- Webhook reliability: webhooks có thể miss — cần reconciliation job
+- Theme compatibility: mỗi theme render khác nhau, test 15-20 themes trước launch
+- App conflicts: merchants cài nhiều apps → CSS/JS conflicts. Namespace mọi thứ.
+- Performance: collection page load nhiều products → lazy-load mandatory
+- Billing: merchant uninstall không trigger refund tự động — handle gracefully
+
 ## Commands
 
 ```bash
