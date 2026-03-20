@@ -26,9 +26,25 @@ Code review, QA, ship — AI tool nào cũng làm được. Phần **nghĩ trư�
 
 `/office-hours` không phải "kể idea rồi AI khen hay." Nó hỏi ngược: bằng chứng demand ở đâu? Merchants đang giải quyết bằng gì? Nếu không trả lời được — đó là thứ cần tìm trước khi viết code.
 
+`/plan-ceo-review` là skill mạnh nhất trong bộ. Nó không review code — nó review **quyết định**. Khi đã có plan (từ `/office-hours` hoặc tự viết), skill này đóng vai CEO/founder challenge lại toàn bộ: đây có phải đúng vấn đề cần giải không? Shopify sẽ build native cái này trong 12 tháng tới không? Merchant segment nào đang nhắm — SMB, mid-market, hay Plus? Cross-sell với 6 app hiện tại ra sao?
+
+Bốn chế độ review tùy theo giai đoạn:
+- **SCOPE EXPANSION** — feature mới, greenfield. "Nếu 10x tham vọng hơn thì trông thế nào?" Mỗi ý tưởng mở rộng đều hỏi bạn approve/defer/skip — không tự ý thêm scope.
+- **SELECTIVE EXPANSION** — cải tiến app cũ. Giữ scope hiện tại làm baseline, nhưng đồng thời surface mọi cơ hội mở rộng để bạn cherry-pick từng cái.
+- **HOLD SCOPE** — bug fix, refactor. Scope đã đúng, chỉ cần bulletproof — kiến trúc, security, edge cases, observability, rollback plan.
+- **SCOPE REDUCTION** — plan quá lớn. Cắt tới minimum viable, tách "must ship" vs "nice to ship."
+
+Quy trình review đi qua 10 section: architecture (vẽ dependency graph, data flow 4 đường — happy/nil/empty/error), error & rescue map (mọi method có thể fail → exception class → rescue action → user thấy gì), security & threat model, data flow tracing, test plan, observability, deployment strategy, và UI review nếu có frontend.
+
+Mỗi section dừng lại hỏi bạn — không batch câu hỏi, không tự quyết. Mọi issue đi kèm recommendation + lý do. Nếu không có issue hoặc fix rõ ràng thì tự xử và đi tiếp, không hỏi thừa.
+
+Tư duy đằng sau skill này lấy từ Bezos (one-way/two-way doors, Day 1 proxy skepticism), Grove (paranoid scanning), Munger (inversion), Jobs (focus as subtraction), Horowitz (wartime/peacetime), Altman (willfulness as strategy, leverage obsession). Không phải checklist rập khuôn — mà là cognitive patterns áp dụng đúng chỗ: inversion khi đánh giá kiến trúc, subtraction khi challenge scope, speed calibration khi đánh giá timeline.
+
+Output cuối: CEO Plan file — ghi lại vision, scope decisions (accepted/deferred/skipped kèm lý do), và accepted scope. File này survive qua nhiều conversation, dùng làm source of truth cho `/plan-eng-review` tiếp theo.
+
 `/plan-eng-review` chuyển design doc thành quyết định cụ thể. Lưu vào metafields hay database? Render bằng Liquid hay JavaScript? Mỗi quyết định có lựa chọn, đánh đổi, và gợi ý. Xong session là có kiến trúc chốt + test plan sẵn.
 
-Ba cái này nối thành pipeline — research → design doc → kiến trúc → test plan. Chưa viết dòng code nào mà đã biết build gì, cho ai, bằng cách nào.
+Ba cái này nối thành pipeline — research → design doc → CEO review → kiến trúc → test plan. Chưa viết dòng code nào mà đã biết build gì, cho ai, bằng cách nào, và đã challenge xong mọi giả định.
 
 ## 15 Skills
 
@@ -38,7 +54,7 @@ Ba cái này nối thành pipeline — research → design doc → kiến trúc 
 |-------|--------|
 | `/research` | Phân tích thị trường Shopify — đối thủ có bao nhiêu installs, merchants đang chê gì, giá bao nhiêu, gap nào chưa ai lấp. Dùng StoreLead API lấy data thật. |
 | `/office-hours` | Hỏi 6 câu khó trước khi build — ai cần cái này, bằng chứng ở đâu, version nhỏ nhất là gì. Viết design doc. |
-| `/plan-ceo-review` | Nhìn lại chiến lược — app này nên mở rộng hay thu nhỏ? Shopify sẽ build native không? Nhắm merchant nào? |
+| `/plan-ceo-review` | **Skill mạnh nhất.** CEO-mode challenge toàn bộ plan — đúng vấn đề chưa, Shopify sẽ build native không, merchant segment nào, cross-sell ra sao. 4 chế độ (Expansion/Selective/Hold/Reduction), 10 section review, vẽ architecture + error map + threat model. Lưu CEO Plan file làm source of truth. |
 
 ### Thiết kế & Kiến trúc
 
